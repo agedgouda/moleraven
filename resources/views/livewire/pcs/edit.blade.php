@@ -1,6 +1,7 @@
 <div class="flex h-full w-full flex-1 flex-col gap-6 p-6">
     <div class="flex items-center gap-3">
         <flux:button href="{{ route('pcs.index') }}" icon="arrow-left" variant="ghost" size="sm" wire:navigate />
+        <x-entity-icon :model="$character" class="h-10 w-10 rounded-full" />
         <div>
             <flux:heading size="xl">{{ $character->name }}</flux:heading>
             <span class="font-mono text-sm tracking-widest text-zinc-400">{{ $character->uppString() }}</span>
@@ -55,52 +56,7 @@
 
                     {{-- Connections --}}
                     <div x-show="tab === 'connections'" class="p-6">
-                        <div class="mb-3 flex justify-end">
-                            <flux:button size="sm" icon="plus" wire:click="openConnectionModal">Add</flux:button>
-                        </div>
-
-                        @php
-                            $allConnections = $this->npcConnections->map(fn($c) => ['type' => 'npc', 'conn' => $c])
-                                ->concat($this->orgConnections->map(fn($c) => ['type' => 'org', 'conn' => $c]))
-                                ->sortBy(fn($item) => $item['type'] === 'npc' ? $item['conn']->npc->name : $item['conn']->organization->name);
-                        @endphp
-
-                        @if ($allConnections->isEmpty())
-                            <flux:text class="text-sm text-zinc-400">No connections yet.</flux:text>
-                        @else
-                            <div class="space-y-2">
-                                @foreach ($allConnections as $item)
-                                    @php $type = $item['type']; $conn = $item['conn']; $rt = $conn->relationship_type; @endphp
-                                    <div class="flex items-start justify-between rounded-lg border border-zinc-100 px-3 py-2 dark:border-zinc-700">
-                                        <div>
-                                            @if ($type === 'npc')
-                                                <a href="{{ route('npcs.edit', $conn->npc) }}" class="font-medium text-zinc-800 hover:text-blue-600 dark:text-zinc-200" wire:navigate>{{ $conn->npc->name }}</a>
-                                                <span class="ml-1 text-xs text-zinc-400">NPC</span>
-                                            @else
-                                                <a href="{{ route('organizations.edit', $conn->organization) }}" class="font-medium text-zinc-800 hover:text-blue-600 dark:text-zinc-200" wire:navigate>{{ $conn->organization->name }}</a>
-                                                <span class="ml-1 text-xs text-zinc-400">Org</span>
-                                            @endif
-                                            <span class="ml-2 rounded-full px-1.5 py-0.5 text-xs font-semibold
-                                                @if($rt->color() === 'success') bg-green-100 text-green-800
-                                                @elseif($rt->color() === 'info') bg-blue-100 text-blue-800
-                                                @elseif($rt->color() === 'warning') bg-amber-100 text-amber-800
-                                                @elseif($rt->color() === 'primary') bg-purple-100 text-purple-800
-                                                @elseif($rt->color() === 'danger') bg-red-100 text-red-800
-                                                @else bg-zinc-100 text-zinc-700 @endif">
-                                                {{ $rt->label() }}
-                                            </span>
-                                            @if ($conn->notes)
-                                                <div class="text-xs text-zinc-400">{{ Str::limit($conn->notes, 50) }}</div>
-                                            @endif
-                                        </div>
-                                        <div class="flex shrink-0 gap-1">
-                                            <flux:button size="xs" icon="pencil" variant="ghost" wire:click="openConnectionModal({{ $conn->id }}, '{{ $type }}')" />
-                                            <flux:button size="xs" icon="trash" variant="ghost" wire:click="deleteConnection({{ $conn->id }}, '{{ $type }}')" wire:confirm="Remove this connection?" class="text-red-500" />
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
+                        <x-connections-card :connections="$this->allConnections" :card="false" :sort-by="$connectionSortBy" :sort-dir="$connectionSortDir" />
                     </div>
 
                     {{-- Background --}}
@@ -211,6 +167,8 @@
 
         {{-- Right column: UPP, skills, NPCs, orgs (1/3) --}}
         <div class="space-y-6">
+
+            @include('livewire.shared.image-card', ['model' => $character])
 
             @include('livewire.shared.upp-card')
 

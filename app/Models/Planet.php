@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Filament\Resources\Planets\Schemas\PlanetForm;
+use App\Support\TravellerMap;
 use Database\Factories\PlanetFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -25,7 +25,7 @@ class Planet extends Model
     protected function displayLabel(): Attribute
     {
         return Attribute::get(function () {
-            $data = PlanetForm::getWorldData($this->sector, $this->hex);
+            $data = TravellerMap::getWorldData($this->sector, $this->hex);
 
             return $data ? "{$data['Name']} ({$this->hex})" : "$this->sector / $this->hex";
         });

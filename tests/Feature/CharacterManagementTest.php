@@ -1,22 +1,14 @@
 <?php
 
-use App\Enums\CharacterStatus;
 use App\Enums\NpcRelationshipType;
-use App\Filament\Pages\Party;
-use App\Filament\Resources\Characters\CharacterResource;
-use App\Filament\Resources\Characters\Pages\CreateCharacter;
-use App\Filament\Resources\Characters\Pages\EditCharacter;
-use App\Filament\Resources\Characters\Pages\ListCharacters;
-use App\Filament\Resources\Characters\RelationManagers\CareerTermsRelationManager;
-use App\Filament\Resources\Characters\RelationManagers\CharacterNpcsRelationManager;
+use App\Livewire\Party\Index as PartyIndex;
+use App\Livewire\Pcs\Create as CreateCharacter;
+use App\Livewire\Pcs\Edit as EditCharacter;
+use App\Livewire\Pcs\Index as ListCharacters;
 use App\Models\Character;
 use App\Models\CharacterNpc;
 use App\Models\Npc;
 use App\Models\User;
-use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\Testing\TestAction;
 use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
@@ -27,13 +19,13 @@ beforeEach(function () {
 });
 
 describe('character list', function () {
-    it('shows only the authenticated user\'s characters', function () {
-        $mine = Character::factory()->for($this->user)->create();
-        $other = Character::factory()->create();
+    it('shows all characters', function () {
+        Character::factory()->for($this->user)->create(['name' => 'My Character']);
+        Character::factory()->create(['name' => 'Other Character']);
 
         Livewire::test(ListCharacters::class)
-            ->assertCanSeeTableRecords([$mine])
-            ->assertCanNotSeeTableRecords([$other]);
+            ->assertSee('My Character')
+            ->assertSee('Other Character');
     });
 
     it('displays the UPP string', function () {
@@ -42,29 +34,24 @@ describe('character list', function () {
             'intelligence' => 7, 'education' => 7, 'social_standing' => 7,
         ]);
 
-        Livewire::test(ListCharacters::class)
-            ->assertSee('777777');
+        Livewire::test(ListCharacters::class)->assertSee('777777');
     });
 });
 
 describe('character creation', function () {
     it('creates a character assigned to the authenticated user', function () {
         Livewire::test(CreateCharacter::class)
-            ->fillForm([
-                'name' => 'Ander Voss',
-                'strength' => 8,
-                'dexterity' => 9,
-                'endurance' => 7,
-                'intelligence' => 10,
-                'education' => 8,
-                'social_standing' => 6,
-                'age' => 26,
-                'homeworld' => 'Regina',
-                'credits' => 5000,
-                'status' => CharacterStatus::Active->value,
-            ])
-            ->call('create')
-            ->assertHasNoFormErrors();
+            ->set('name', 'Ander Voss')
+            ->set('strength', 8)
+            ->set('dexterity', 9)
+            ->set('endurance', 7)
+            ->set('intelligence', 10)
+            ->set('education', 8)
+            ->set('socialStanding', 6)
+            ->set('age', 26)
+            ->set('credits', 5000)
+            ->call('save')
+            ->assertHasNoErrors();
 
         $character = Character::where('name', 'Ander Voss')->first();
         expect($character)->not->toBeNull()
@@ -72,23 +59,23 @@ describe('character creation', function () {
     });
 });
 
-describe('current character header action', function () {
-    it('sets a character as current via the toggle action', function () {
-        $character = Character::factory()->for($this->user)->create();
+describe('current character toggle', function () {
+    it('sets a character as current', function () {
+        $character = Character::factory()->for($this->user)->create(['is_current' => false]);
 
-        Livewire::test(EditCharacter::class, ['record' => $character->id])
-            ->callAction('toggle_current')
-            ->assertHasNoActionErrors();
+        Livewire::test(EditCharacter::class, ['character' => $character])
+            ->set('isCurrent', true)
+            ->call('save');
 
         expect($character->fresh()->is_current)->toBeTrue();
     });
 
-    it('unsets a current character via the toggle action', function () {
+    it('unsets a current character', function () {
         $character = Character::factory()->for($this->user)->current()->create();
 
-        Livewire::test(EditCharacter::class, ['record' => $character->id])
-            ->callAction('toggle_current')
-            ->assertHasNoActionErrors();
+        Livewire::test(EditCharacter::class, ['character' => $character])
+            ->set('isCurrent', false)
+            ->call('save');
 
         expect($character->fresh()->is_current)->toBeFalse();
     });
@@ -116,24 +103,17 @@ describe('current character enforcement', function () {
 });
 
 describe('character editing', function () {
-    it('can edit own character', function () {
+    it('can edit a character', function () {
         $character = Character::factory()->for($this->user)->create();
 
-        Livewire::test(EditCharacter::class, ['record' => $character->id])
-            ->fillForm(['name' => 'Updated Name', 'credits' => 9999])
+        Livewire::test(EditCharacter::class, ['character' => $character])
+            ->set('name', 'Updated Name')
+            ->set('credits', 9999)
             ->call('save')
-            ->assertHasNoFormErrors();
+            ->assertHasNoErrors();
 
         expect($character->fresh()->name)->toBe('Updated Name')
             ->and($character->fresh()->credits)->toBe(9999);
-    });
-
-    it('does not include another user\'s character in the query scope', function () {
-        $other = Character::factory()->create();
-
-        $visible = CharacterResource::getEloquentQuery()->pluck('id');
-
-        expect($visible)->not->toContain($other->id);
     });
 });
 
@@ -157,97 +137,74 @@ describe('UPP calculation', function () {
     });
 });
 
-describe('career terms relation manager', function () {
+describe('career terms', function () {
     it('can create a career term', function () {
         $character = Character::factory()->for($this->user)->create();
 
-        Livewire::test(CareerTermsRelationManager::class, [
-            'ownerRecord' => $character,
-            'pageClass' => EditCharacter::class,
-        ])
-            ->assertOk()
-            ->callAction(TestAction::make(CreateAction::class)->table(), [
-                'career' => 'Navy',
-                'assignment' => 'Flight',
-                'term' => 1,
-                'rank' => 2,
-                'rank_title' => 'Lieutenant',
-            ])
-            ->assertHasNoActionErrors();
+        Livewire::test(EditCharacter::class, ['character' => $character])
+            ->set('careerModalCareer', 'Navy')
+            ->set('careerModalAssignment', 'Flight')
+            ->set('careerModalTerm', 1)
+            ->set('careerModalRank', 2)
+            ->set('careerModalRankTitle', 'Lieutenant')
+            ->call('saveCareerTerm')
+            ->assertHasNoErrors();
 
         expect($character->careerTerms()->count())->toBe(1)
             ->and($character->careerTerms()->first()->career)->toBe('Navy');
     });
 });
 
-describe('skills repeater', function () {
-    it('can add skills via the inline repeater', function () {
+describe('skills', function () {
+    it('can add a skill', function () {
         $character = Character::factory()->for($this->user)->create();
 
-        Livewire::test(EditCharacter::class, ['record' => $character->id])
-            ->fillForm([
-                'skills' => [
-                    ['name' => 'Pilot', 'level' => 2],
-                    ['name' => 'Astrogation', 'level' => 1],
-                ],
-            ])
-            ->call('save')
-            ->assertHasNoFormErrors();
+        Livewire::test(EditCharacter::class, ['character' => $character])
+            ->set('skillModalName', 'Pilot')
+            ->set('skillModalLevel', 2)
+            ->call('saveSkill')
+            ->assertHasNoErrors();
+
+        expect($character->skills()->where('name', 'Pilot')->where('level', 2)->exists())->toBeTrue();
+    });
+
+    it('can add multiple skills', function () {
+        $character = Character::factory()->for($this->user)->create();
+        $component = Livewire::test(EditCharacter::class, ['character' => $character]);
+
+        $component->set('skillModalName', 'Pilot')->set('skillModalLevel', 2)->call('saveSkill');
+        $component->set('skillModalName', 'Astrogation')->set('skillModalLevel', 1)->call('saveSkill');
 
         expect($character->skills()->count())->toBe(2)
-            ->and($character->skills()->where('name', 'Pilot')->where('level', 2)->exists())->toBeTrue()
             ->and($character->skills()->where('name', 'Astrogation')->where('level', 1)->exists())->toBeTrue();
     });
+});
 
-    it('allows custom skill names not in the predefined list', function () {
+describe('inventory', function () {
+    it('can add an inventory item', function () {
         $character = Character::factory()->for($this->user)->create();
 
-        Livewire::test(EditCharacter::class, ['record' => $character->id])
-            ->fillForm([
-                'skills' => [
-                    ['name' => 'Xenobiology', 'level' => 1],
-                ],
-            ])
-            ->call('save')
-            ->assertHasNoFormErrors();
+        Livewire::test(EditCharacter::class, ['character' => $character])
+            ->set('inventoryModalName', 'Autopistol')
+            ->set('inventoryModalQuantity', 1)
+            ->call('saveInventoryItem')
+            ->assertHasNoErrors();
 
-        expect($character->skills()->where('name', 'Xenobiology')->exists())->toBeTrue();
+        expect($character->inventoryItems()->where('name', 'Autopistol')->exists())->toBeTrue();
     });
 });
 
-describe('inventory repeater', function () {
-    it('can add inventory items via the inline repeater', function () {
-        $character = Character::factory()->for($this->user)->create();
-
-        Livewire::test(EditCharacter::class, ['record' => $character->id])
-            ->fillForm([
-                'inventoryItems' => [
-                    ['name' => 'Autopistol', 'quantity' => 1, 'description' => null],
-                    ['name' => 'Vacc Suit', 'quantity' => 1, 'description' => 'Standard issue'],
-                ],
-            ])
-            ->call('save')
-            ->assertHasNoFormErrors();
-
-        expect($character->inventoryItems()->count())->toBe(2)
-            ->and($character->inventoryItems()->where('name', 'Autopistol')->exists())->toBeTrue();
-    });
-});
-
-describe('character NPC relation manager', function () {
+describe('character NPC connections', function () {
     it('can create a connection from the character side', function () {
         $character = Character::factory()->for($this->user)->create();
         $npc = Npc::factory()->create();
 
-        Livewire::test(CharacterNpcsRelationManager::class, [
-            'ownerRecord' => $character,
-            'pageClass' => EditCharacter::class,
-        ])
-            ->callAction(TestAction::make(CreateAction::class)->table(), [
-                'npc_id' => $npc->id,
-                'relationship_type' => NpcRelationshipType::Rival->value,
-            ])
-            ->assertHasNoActionErrors();
+        Livewire::test(EditCharacter::class, ['character' => $character])
+            ->set('connectionModalType', 'npc')
+            ->set('connectionModalNpcId', $npc->id)
+            ->set('connectionModalNpcRelType', NpcRelationshipType::Rival->value)
+            ->call('saveConnection')
+            ->assertHasNoErrors();
 
         expect($character->characterNpcs()->where('npc_id', $npc->id)->exists())->toBeTrue();
     });
@@ -261,14 +218,13 @@ describe('character NPC relation manager', function () {
             'relationship_type' => NpcRelationshipType::Contact,
         ]);
 
-        Livewire::test(CharacterNpcsRelationManager::class, [
-            'ownerRecord' => $character,
-            'pageClass' => EditCharacter::class,
-        ])
-            ->callAction(TestAction::make(EditAction::class)->table($connection->id), [
-                'relationship_type' => NpcRelationshipType::Ally->value,
-            ])
-            ->assertHasNoActionErrors();
+        Livewire::test(EditCharacter::class, ['character' => $character])
+            ->set('connectionModalType', 'npc')
+            ->set('editingConnectionId', $connection->id)
+            ->set('connectionModalNpcId', $npc->id)
+            ->set('connectionModalNpcRelType', NpcRelationshipType::Ally->value)
+            ->call('saveConnection')
+            ->assertHasNoErrors();
 
         expect($connection->fresh()->relationship_type)->toBe(NpcRelationshipType::Ally);
     });
@@ -282,12 +238,9 @@ describe('character NPC relation manager', function () {
             'relationship_type' => NpcRelationshipType::Enemy,
         ]);
 
-        Livewire::test(CharacterNpcsRelationManager::class, [
-            'ownerRecord' => $character,
-            'pageClass' => EditCharacter::class,
-        ])
-            ->callAction(TestAction::make(DeleteAction::class)->table($connection->id))
-            ->assertHasNoActionErrors();
+        Livewire::test(EditCharacter::class, ['character' => $character])
+            ->call('deleteConnection', $connection->id, 'npc')
+            ->assertHasNoErrors();
 
         expect(CharacterNpc::find($connection->id))->toBeNull();
     });
@@ -299,7 +252,7 @@ describe('party page', function () {
         Character::factory()->for($other)->current()->create(['name' => 'Zanith Rol']);
         Character::factory()->for($other)->retired()->create(['name' => 'Old Zanith']);
 
-        Livewire::test(Party::class)
+        Livewire::test(PartyIndex::class)
             ->assertSee('Zanith Rol')
             ->assertDontSee('Old Zanith');
     });
@@ -308,6 +261,6 @@ describe('party page', function () {
         $other = User::factory()->create();
         Character::factory()->for($other)->current()->create(['name' => 'Ren Sulaar']);
 
-        Livewire::test(Party::class)->assertSee('Ren Sulaar');
+        Livewire::test(PartyIndex::class)->assertSee('Ren Sulaar');
     });
 });

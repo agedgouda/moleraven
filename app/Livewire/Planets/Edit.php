@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Planets;
 
-use App\Filament\Resources\Planets\Schemas\PlanetForm;
 use App\Models\Planet;
+use App\Support\TravellerMap;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -29,13 +29,13 @@ class Edit extends Component
             return [];
         }
 
-        return PlanetForm::worldOptions($this->sector);
+        return TravellerMap::worldOptions($this->sector);
     }
 
     #[Computed]
     public function worldData(): ?array
     {
-        return PlanetForm::getWorldData($this->sector, $this->hex);
+        return TravellerMap::getWorldData($this->sector, $this->hex);
     }
 
     public function mount(Planet $planet): void
@@ -77,7 +77,7 @@ class Edit extends Component
     public function render(): View
     {
         return view('livewire.planets.edit', [
-            'sectors' => PlanetForm::sectors(),
+            'sectors' => TravellerMap::sectors(),
         ]);
     }
 }

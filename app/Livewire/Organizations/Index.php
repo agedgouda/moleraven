@@ -22,9 +22,9 @@ class Index extends Component
     public function render(): View
     {
         $organizations = Organization::query()
+            ->with('baseOfOperations')
             ->when($this->search, fn ($q) => $q->where('name', 'like', "%{$this->search}%")
-                ->orWhere('type', 'like', "%{$this->search}%")
-                ->orWhere('base_of_operations', 'like', "%{$this->search}%"))
+                ->orWhere('type', 'like', "%{$this->search}%"))
             ->orderBy('name')
             ->get();
 

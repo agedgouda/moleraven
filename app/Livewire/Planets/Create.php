@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Planets;
 
-use App\Filament\Resources\Planets\Schemas\PlanetForm;
 use App\Models\Planet;
+use App\Support\TravellerMap;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -27,7 +27,7 @@ class Create extends Component
             return [];
         }
 
-        return PlanetForm::worldOptions($this->sector);
+        return TravellerMap::worldOptions($this->sector);
     }
 
     public function updatedSector(): void
@@ -55,7 +55,7 @@ class Create extends Component
     public function render(): View
     {
         return view('livewire.planets.create', [
-            'sectors' => PlanetForm::sectors(),
+            'sectors' => TravellerMap::sectors(),
         ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Livewire\Pcs;
 use App\Enums\CharacterStatus;
 use App\Enums\NpcRelationshipType;
 use App\Enums\OrganizationRelationshipType;
+use App\Livewire\Concerns\HasConnectionFilters;
 use App\Models\CareerTerm;
 use App\Models\Character;
 use App\Models\CharacterNpc;
@@ -17,17 +18,23 @@ use App\Models\Skill;
 use App\Support\Mgt2;
 use Flux\Flux;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.app', ['title' => 'Edit PC'])]
 #[Title('Edit PC')]
 class Edit extends Component
 {
+    use HasConnectionFilters, WithFileUploads;
+
     public Character $character;
+
+    public $imageUpload;
 
     // Core fields
     public string $name = '';
@@ -124,15 +131,23 @@ class Edit extends Component
     }
 
     #[Computed]
-    public function npcConnections(): Collection
+    public function allConnections(): Collection
     {
-        return $this->character->characterNpcs()->with('npc')->get();
-    }
+        $npc = $this->character->characterNpcs()->with('npc')->get()->map(fn ($c) => [
+            'id' => $c->id, 'type' => 'npc', 'model' => $c->npc,
+            'name' => $c->npc->name, 'label' => 'NPC',
+            'route' => route('npcs.edit', $c->npc),
+            'relationshipType' => $c->relationship_type, 'notes' => $c->notes,
+        ]);
 
-    #[Computed]
-    public function orgConnections(): Collection
-    {
-        return $this->character->organizations()->with('organization')->get();
+        $org = $this->character->organizations()->with('organization')->get()->map(fn ($c) => [
+            'id' => $c->id, 'type' => 'org', 'model' => $c->organization,
+            'name' => $c->organization->name, 'label' => 'Org',
+            'route' => route('organizations.edit', $c->organization),
+            'relationshipType' => $c->relationship_type, 'notes' => $c->notes,
+        ]);
+
+        return $this->applyConnectionFilters($npc->concat($org));
     }
 
     public function mount(Character $character): void
@@ -392,7 +407,7 @@ class Edit extends Component
                 $this->character->characterNpcs()->create($data);
             }
 
-            unset($this->npcConnections);
+            unset($this->allConnections);
         } else {
             $this->validate(['connectionModalOrgId' => 'required|integer|exists:organizations,id']);
 
@@ -408,7 +423,7 @@ class Edit extends Component
                 $this->character->organizations()->create($data);
             }
 
-            unset($this->orgConnections);
+            unset($this->allConnections);
         }
 
         $this->modal('connection-modal')->close();
@@ -419,10 +434,34 @@ class Edit extends Component
     {
         if ($type === 'npc') {
             CharacterNpc::findOrFail($id)->delete();
-            unset($this->npcConnections);
         } else {
             CharacterOrganization::findOrFail($id)->delete();
-            unset($this->orgConnections);
+        }
+
+        unset($this->allConnections);
+    }
+
+    // ---- Image ----
+
+    public function updatedImageUpload(): void
+    {
+        $this->validate(['imageUpload' => 'image|max:4096']);
+
+        if ($this->character->image_path) {
+            Storage::disk('public')->delete($this->character->image_path);
+        }
+
+        $path = $this->imageUpload->store('characters', 'public');
+        $this->character->update(['image_path' => $path]);
+        $this->imageUpload = null;
+        Flux::toast('Image uploaded.');
+    }
+
+    public function deleteImage(): void
+    {
+        if ($this->character->image_path) {
+            Storage::disk('public')->delete($this->character->image_path);
+            $this->character->update(['image_path' => null]);
         }
     }
 

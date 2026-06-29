@@ -25,12 +25,13 @@
                     @foreach ($organizations as $org)
                         <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
                             <td class="px-4 py-3">
-                                <a href="{{ route('organizations.edit', $org) }}" class="font-semibold text-zinc-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400" wire:navigate>
+                                <a href="{{ route('organizations.edit', $org) }}" class="inline-flex items-center gap-2.5 font-semibold text-zinc-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400" wire:navigate>
+                                    <x-entity-icon :model="$org" />
                                     {{ $org->name }}
                                 </a>
                             </td>
                             <td class="px-4 py-3 text-zinc-600 dark:text-zinc-400">{{ $org->type ?? '—' }}</td>
-                            <td class="px-4 py-3 text-zinc-600 dark:text-zinc-400">{{ $org->base_of_operations ?? '—' }}</td>
+                            <td class="px-4 py-3 text-zinc-600 dark:text-zinc-400">{{ $org->baseOfOperations?->display_label ?? '—' }}</td>
                             <td class="px-4 py-3 text-right">
                                 <div class="flex justify-end gap-2">
                                     <flux:button size="sm" href="{{ route('organizations.edit', $org) }}" wire:navigate icon="pencil" variant="ghost" />

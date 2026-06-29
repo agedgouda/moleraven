@@ -20,7 +20,7 @@ class OrganizationFactory extends Factory
         return [
             'name' => fake()->company(),
             'type' => fake()->randomElement(self::$types),
-            'base_of_operations' => fake()->word().' '.fake()->randomElement(['Prime', 'Station', 'Port', 'Highport']),
+            'base_of_operations_planet_id' => null,
             'notes' => null,
         ];
     }

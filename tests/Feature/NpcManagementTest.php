@@ -1,20 +1,14 @@
 <?php
 
 use App\Enums\NpcRelationshipType;
-use App\Filament\Resources\Characters\Pages\EditCharacter;
-use App\Filament\Resources\Characters\RelationManagers\CharacterNpcsRelationManager;
-use App\Filament\Resources\Npcs\Pages\CreateNpc;
-use App\Filament\Resources\Npcs\Pages\EditNpc;
-use App\Filament\Resources\Npcs\Pages\ListNpcs;
-use App\Filament\Resources\Npcs\RelationManagers\CharacterConnectionsRelationManager;
+use App\Livewire\Npcs\Create as CreateNpc;
+use App\Livewire\Npcs\Edit as EditNpc;
+use App\Livewire\Npcs\Index as ListNpcs;
+use App\Livewire\Pcs\Edit as EditCharacter;
 use App\Models\Character;
 use App\Models\CharacterNpc;
 use App\Models\Npc;
 use App\Models\User;
-use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\Testing\TestAction;
 use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
@@ -26,10 +20,9 @@ beforeEach(function () {
 
 describe('NPC list', function () {
     it('shows all NPCs to any logged-in user', function () {
-        $npc = Npc::factory()->create(['name' => 'Baron Hendricks']);
+        Npc::factory()->create(['name' => 'Baron Hendricks']);
 
-        Livewire::test(ListNpcs::class)
-            ->assertCanSeeTableRecords([$npc]);
+        Livewire::test(ListNpcs::class)->assertSee('Baron Hendricks');
     });
 
     it('displays the UPP string', function () {
@@ -46,15 +39,16 @@ describe('NPC list', function () {
 describe('NPC creation', function () {
     it('can create an NPC', function () {
         Livewire::test(CreateNpc::class)
-            ->fillForm([
-                'name' => 'Lady Voss',
-                'strength' => 6, 'dexterity' => 8, 'endurance' => 7,
-                'intelligence' => 10, 'education' => 9, 'social_standing' => 12,
-                'homeworld' => 'Regina',
-                'age' => 45,
-            ])
-            ->call('create')
-            ->assertHasNoFormErrors();
+            ->set('name', 'Lady Voss')
+            ->set('strength', 6)
+            ->set('dexterity', 8)
+            ->set('endurance', 7)
+            ->set('intelligence', 10)
+            ->set('education', 9)
+            ->set('socialStanding', 12)
+            ->set('age', 45)
+            ->call('save')
+            ->assertHasNoErrors();
 
         expect(Npc::where('name', 'Lady Voss')->exists())->toBeTrue();
     });
@@ -72,21 +66,16 @@ describe('NPC UPP', function () {
 });
 
 describe('NPC skills', function () {
-    it('can add skills to an NPC via the inline repeater', function () {
+    it('can add skills to an NPC', function () {
         $npc = Npc::factory()->create();
 
-        Livewire::test(EditNpc::class, ['record' => $npc->id])
-            ->fillForm([
-                'skills' => [
-                    ['name' => 'Persuade', 'level' => 3],
-                    ['name' => 'Streetwise', 'level' => 2],
-                ],
-            ])
-            ->call('save')
-            ->assertHasNoFormErrors();
+        Livewire::test(EditNpc::class, ['npc' => $npc])
+            ->set('skillModalName', 'Persuade')
+            ->set('skillModalLevel', 3)
+            ->call('saveSkill')
+            ->assertHasNoErrors();
 
-        expect($npc->skills()->count())->toBe(2)
-            ->and($npc->skills()->where('name', 'Persuade')->where('level', 3)->exists())->toBeTrue();
+        expect($npc->skills()->where('name', 'Persuade')->where('level', 3)->exists())->toBeTrue();
     });
 });
 
@@ -95,17 +84,13 @@ describe('character NPC connections', function () {
         $character = Character::factory()->for($this->user)->create();
         $npc = Npc::factory()->create();
 
-        Livewire::test(CharacterNpcsRelationManager::class, [
-            'ownerRecord' => $character,
-            'pageClass' => EditCharacter::class,
-        ])
-            ->assertOk()
-            ->callAction(TestAction::make(CreateAction::class)->table(), [
-                'npc_id' => $npc->id,
-                'relationship_type' => NpcRelationshipType::Ally->value,
-                'notes' => 'Met during the Spinward Marches campaign.',
-            ])
-            ->assertHasNoActionErrors();
+        Livewire::test(EditCharacter::class, ['character' => $character])
+            ->set('connectionModalType', 'npc')
+            ->set('connectionModalNpcId', $npc->id)
+            ->set('connectionModalNpcRelType', NpcRelationshipType::Ally->value)
+            ->set('connectionModalNotes', 'Met during the Spinward Marches campaign.')
+            ->call('saveConnection')
+            ->assertHasNoErrors();
 
         expect($character->characterNpcs()->where('npc_id', $npc->id)->exists())->toBeTrue()
             ->and($character->characterNpcs()->first()->relationship_type)->toBe(NpcRelationshipType::Ally);
@@ -115,16 +100,12 @@ describe('character NPC connections', function () {
         $character = Character::factory()->for($this->user)->create();
         $npc = Npc::factory()->create();
 
-        Livewire::test(CharacterConnectionsRelationManager::class, [
-            'ownerRecord' => $npc,
-            'pageClass' => EditNpc::class,
-        ])
-            ->assertOk()
-            ->callAction(TestAction::make(CreateAction::class)->table(), [
-                'character_id' => $character->id,
-                'relationship_type' => NpcRelationshipType::Contact->value,
-            ])
-            ->assertHasNoActionErrors();
+        Livewire::test(EditNpc::class, ['npc' => $npc])
+            ->set('connectionModalType', 'character')
+            ->set('connectionModalCharacterId', $character->id)
+            ->set('connectionModalCharacterRelType', NpcRelationshipType::Contact->value)
+            ->call('saveConnection')
+            ->assertHasNoErrors();
 
         expect($npc->characterConnections()->where('character_id', $character->id)->exists())->toBeTrue()
             ->and($npc->characterConnections()->first()->relationship_type)->toBe(NpcRelationshipType::Contact);
@@ -139,14 +120,13 @@ describe('character NPC connections', function () {
             'relationship_type' => NpcRelationshipType::Contact,
         ]);
 
-        Livewire::test(CharacterConnectionsRelationManager::class, [
-            'ownerRecord' => $npc,
-            'pageClass' => EditNpc::class,
-        ])
-            ->callAction(TestAction::make(EditAction::class)->table($connection->id), [
-                'relationship_type' => NpcRelationshipType::Rival->value,
-            ])
-            ->assertHasNoActionErrors();
+        Livewire::test(EditNpc::class, ['npc' => $npc])
+            ->set('connectionModalType', 'character')
+            ->set('editingConnectionId', $connection->id)
+            ->set('connectionModalCharacterId', $character->id)
+            ->set('connectionModalCharacterRelType', NpcRelationshipType::Rival->value)
+            ->call('saveConnection')
+            ->assertHasNoErrors();
 
         expect($connection->fresh()->relationship_type)->toBe(NpcRelationshipType::Rival);
     });
@@ -160,12 +140,9 @@ describe('character NPC connections', function () {
             'relationship_type' => NpcRelationshipType::Enemy,
         ]);
 
-        Livewire::test(CharacterConnectionsRelationManager::class, [
-            'ownerRecord' => $npc,
-            'pageClass' => EditNpc::class,
-        ])
-            ->callAction(TestAction::make(DeleteAction::class)->table($connection->id))
-            ->assertHasNoActionErrors();
+        Livewire::test(EditNpc::class, ['npc' => $npc])
+            ->call('deleteConnection', $connection->id, 'character')
+            ->assertHasNoErrors();
 
         expect(CharacterNpc::find($connection->id))->toBeNull();
     });
@@ -175,17 +152,8 @@ describe('character NPC connections', function () {
         $ally = Character::factory()->for($this->user)->create();
         $enemy = Character::factory()->for(User::factory()->create())->create();
 
-        CharacterNpc::create([
-            'character_id' => $ally->id,
-            'npc_id' => $npc->id,
-            'relationship_type' => NpcRelationshipType::Ally,
-        ]);
-
-        CharacterNpc::create([
-            'character_id' => $enemy->id,
-            'npc_id' => $npc->id,
-            'relationship_type' => NpcRelationshipType::Enemy,
-        ]);
+        CharacterNpc::create(['character_id' => $ally->id, 'npc_id' => $npc->id, 'relationship_type' => NpcRelationshipType::Ally]);
+        CharacterNpc::create(['character_id' => $enemy->id, 'npc_id' => $npc->id, 'relationship_type' => NpcRelationshipType::Enemy]);
 
         expect($npc->characterConnections()->count())->toBe(2);
     });

@@ -22,11 +22,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|null $homeworld_planet_id
  * @property int|null $last_known_planet_id
  * @property string|null $notes
+ * @property string|null $image_path
  */
 #[Fillable([
     'name',
     'strength', 'dexterity', 'endurance', 'intelligence', 'education', 'social_standing',
-    'age', 'homeworld_planet_id', 'last_known_planet_id', 'notes',
+    'age', 'homeworld_planet_id', 'last_known_planet_id', 'notes', 'image_path',
 ])]
 class Npc extends Model
 {

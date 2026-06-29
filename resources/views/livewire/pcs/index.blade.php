@@ -29,7 +29,8 @@
                     @foreach ($characters as $character)
                         <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
                             <td class="px-4 py-3">
-                                <a href="{{ route('pcs.edit', $character) }}" class="font-semibold text-zinc-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400" wire:navigate>
+                                <a href="{{ route('pcs.edit', $character) }}" class="inline-flex items-center gap-2.5 font-semibold text-zinc-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400" wire:navigate>
+                                    <x-entity-icon :model="$character" />
                                     {{ $character->name }}
                                 </a>
                             </td>

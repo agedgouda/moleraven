@@ -6,7 +6,7 @@
 
     <div class="max-w-xl space-y-6">
         <flux:field>
-            <flux:label>Name <flux:badge color="red" size="sm">Required</flux:badge></flux:label>
+            <flux:label>Name @if(blank($name))<flux:badge color="red" size="sm">Required</flux:badge>@endif</flux:label>
             <flux:input wire:model="name" placeholder="Organization name..." autofocus />
             <flux:error name="name" />
         </flux:field>
@@ -22,7 +22,12 @@
 
         <flux:field>
             <flux:label>Base of Operations</flux:label>
-            <flux:input wire:model="baseOfOperations" placeholder="Location or system..." />
+            <flux:select wire:model="baseOfOperationsPlanetId" placeholder="Select planet...">
+                <option value="">— none —</option>
+                @foreach($planets as $id => $label)
+                    <option value="{{ $id }}">{{ $label }}</option>
+                @endforeach
+            </flux:select>
         </flux:field>
 
         <flux:field>

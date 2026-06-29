@@ -10,7 +10,7 @@
             <flux:heading size="lg">Identity</flux:heading>
 
             <flux:field>
-                <flux:label>Name <flux:badge color="red" size="sm">Required</flux:badge></flux:label>
+                <flux:label>Name @if(blank($name))<flux:badge color="red" size="sm">Required</flux:badge>@endif</flux:label>
                 <flux:input wire:model="name" placeholder="NPC name..." autofocus />
                 <flux:error name="name" />
             </flux:field>

@@ -3,6 +3,7 @@
 namespace App\Livewire\Organizations;
 
 use App\Models\Organization;
+use App\Models\Planet;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -16,7 +17,7 @@ class Create extends Component
 
     public ?string $type = '';
 
-    public ?string $baseOfOperations = '';
+    public ?int $baseOfOperationsPlanetId = null;
 
     public ?string $notes = '';
 
@@ -30,7 +31,7 @@ class Create extends Component
         $org = Organization::create([
             'name' => $this->name,
             'type' => $this->type ?: null,
-            'base_of_operations' => $this->baseOfOperations ?: null,
+            'base_of_operations_planet_id' => $this->baseOfOperationsPlanetId,
             'notes' => $this->notes ?: null,
         ]);
 
@@ -39,6 +40,10 @@ class Create extends Component
 
     public function render(): View
     {
-        return view('livewire.organizations.create');
+        $planets = Planet::orderBy('sector')->orderBy('hex')->get()->pluck('display_label', 'id');
+
+        return view('livewire.organizations.create', [
+            'planets' => $planets,
+        ]);
     }
 }

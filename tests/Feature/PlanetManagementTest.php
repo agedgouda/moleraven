@@ -1,8 +1,8 @@
 <?php
 
-use App\Filament\Resources\Planets\Pages\CreatePlanet;
-use App\Filament\Resources\Planets\Pages\EditPlanet;
-use App\Filament\Resources\Planets\Pages\ListPlanets;
+use App\Livewire\Planets\Create as CreatePlanet;
+use App\Livewire\Planets\Edit as EditPlanet;
+use App\Livewire\Planets\Index as ListPlanets;
 use App\Models\Planet;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
@@ -21,10 +21,9 @@ beforeEach(function () {
 
 describe('planet list', function () {
     it('shows all saved planets', function () {
-        $planet = Planet::factory()->create(['sector' => 'Spinward Marches', 'hex' => '1910']);
+        Planet::factory()->create(['sector' => 'Spinward Marches', 'hex' => '1910']);
 
-        Livewire::test(ListPlanets::class)
-            ->assertCanSeeTableRecords([$planet]);
+        Livewire::test(ListPlanets::class)->assertSee('Spinward Marches');
     });
 });
 
@@ -33,13 +32,11 @@ describe('planet creation', function () {
         Http::fake(['travellermap.com/api/sec*' => Http::response(SPIN_TAB, 200)]);
 
         Livewire::test(CreatePlanet::class)
-            ->fillForm([
-                'sector' => 'Spinward Marches',
-                'hex' => '1910',
-                'notes' => 'Capital of the Domain of Deneb.',
-            ])
-            ->call('create')
-            ->assertHasNoFormErrors();
+            ->set('sector', 'Spinward Marches')
+            ->set('hex', '1910')
+            ->set('notes', 'Capital of the Domain of Deneb.')
+            ->call('save')
+            ->assertHasNoErrors();
 
         $planet = Planet::where('sector', 'Spinward Marches')->where('hex', '1910')->first();
         expect($planet)->not->toBeNull()
@@ -53,10 +50,10 @@ describe('planet editing', function () {
 
         $planet = Planet::factory()->create(['sector' => 'Spinward Marches', 'hex' => '1910']);
 
-        Livewire::test(EditPlanet::class, ['record' => $planet->id])
-            ->fillForm(['notes' => 'The party refuelled here.'])
+        Livewire::test(EditPlanet::class, ['planet' => $planet])
+            ->set('notes', 'The party refuelled here.')
             ->call('save')
-            ->assertHasNoFormErrors();
+            ->assertHasNoErrors();
 
         expect($planet->fresh()->notes)->toBe('The party refuelled here.');
     });
@@ -68,7 +65,7 @@ describe('world data display', function () {
 
         $planet = Planet::factory()->create(['sector' => 'Spinward Marches', 'hex' => '1910']);
 
-        Livewire::test(EditPlanet::class, ['record' => $planet->id])
+        Livewire::test(EditPlanet::class, ['planet' => $planet])
             ->assertSee('Regina')
             ->assertSee('A788899-C');
     });
@@ -78,7 +75,7 @@ describe('world data display', function () {
 
         $planet = Planet::factory()->create(['sector' => 'Spinward Marches', 'hex' => '1213']);
 
-        Livewire::test(EditPlanet::class, ['record' => $planet->id])
+        Livewire::test(EditPlanet::class, ['planet' => $planet])
             ->assertSee('World not found');
     });
 
@@ -87,7 +84,7 @@ describe('world data display', function () {
 
         $planet = Planet::factory()->create(['sector' => 'Spinward Marches', 'hex' => '1910']);
 
-        Livewire::test(EditPlanet::class, ['record' => $planet->id])
+        Livewire::test(EditPlanet::class, ['planet' => $planet])
             ->assertSee('Regina (1910)');
     });
 });
