@@ -1,0 +1,76 @@
+<div class="flex h-full w-full flex-1 flex-col gap-6 p-6">
+    <div class="flex items-center gap-3">
+        <flux:button href="{{ route('npcs.index') }}" icon="arrow-left" variant="ghost" size="sm" wire:navigate />
+        <flux:heading size="xl">Add NPC</flux:heading>
+    </div>
+
+    <div class="max-w-2xl space-y-8">
+        {{-- Identity --}}
+        <div class="space-y-4">
+            <flux:heading size="lg">Identity</flux:heading>
+
+            <flux:field>
+                <flux:label>Name <flux:badge color="red" size="sm">Required</flux:badge></flux:label>
+                <flux:input wire:model="name" placeholder="NPC name..." autofocus />
+                <flux:error name="name" />
+            </flux:field>
+
+            <div class="grid grid-cols-2 gap-4">
+                <flux:field>
+                    <flux:label>Homeworld</flux:label>
+                    <flux:select wire:model="homeworldPlanetId" placeholder="Select planet...">
+                        <option value="">— none —</option>
+                        @foreach($planets as $id => $label)
+                            <option value="{{ $id }}">{{ $label }}</option>
+                        @endforeach
+                    </flux:select>
+                </flux:field>
+
+                <flux:field>
+                    <flux:label>Last Known Planet</flux:label>
+                    <flux:select wire:model="lastKnownPlanetId" placeholder="Select planet...">
+                        <option value="">— none —</option>
+                        @foreach($planets as $id => $label)
+                            <option value="{{ $id }}">{{ $label }}</option>
+                        @endforeach
+                    </flux:select>
+                </flux:field>
+            </div>
+
+            <flux:field class="max-w-xs">
+                <flux:label>Age</flux:label>
+                <flux:input type="number" wire:model="age" min="1" max="150" />
+                <flux:error name="age" />
+            </flux:field>
+        </div>
+
+        {{-- UPP --}}
+        <div class="space-y-4">
+            <flux:heading size="lg">UPP — Universal Personality Profile</flux:heading>
+            <div class="grid grid-cols-3 gap-4">
+                @foreach([['strength','STR'],['dexterity','DEX'],['endurance','END'],['intelligence','INT'],['education','EDU'],['socialStanding','SOC']] as [$field, $abbr])
+                    <flux:field>
+                        <flux:label>{{ $abbr }}</flux:label>
+                        <flux:select wire:model="{{ $field }}">
+                            @foreach($statOptions as $value => $hex)
+                                <option value="{{ $value }}">{{ $hex }}</option>
+                            @endforeach
+                        </flux:select>
+                        <flux:error name="{{ $field }}" />
+                    </flux:field>
+                @endforeach
+            </div>
+        </div>
+
+        {{-- Notes --}}
+        <flux:field>
+            <flux:label>Notes</flux:label>
+            <flux:textarea wire:model="notes" rows="4" />
+        </flux:field>
+
+        <div class="flex gap-3">
+            <flux:button wire:click="save" variant="primary">Add NPC</flux:button>
+            <flux:button href="{{ route('npcs.index') }}" variant="ghost" wire:navigate>Cancel</flux:button>
+        </div>
+    </div>
+</div>
