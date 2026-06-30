@@ -89,7 +89,7 @@
 
             @if ($connectionModalType === 'character')
                 <flux:field>
-                    <flux:label>Character <flux:badge color="red" size="sm">Required</flux:badge></flux:label>
+                    <flux:label>Character</flux:label>
                     <flux:select wire:model="connectionModalCharacterId">
                         <option value="">Select character...</option>
                         @foreach($allCharacters as $character)
@@ -108,7 +108,7 @@
                 </flux:field>
             @else
                 <flux:field>
-                    <flux:label>Organization <flux:badge color="red" size="sm">Required</flux:badge></flux:label>
+                    <flux:label>Organization</flux:label>
                     <flux:select wire:model="connectionModalOrgId">
                         <option value="">Select organization...</option>
                         @foreach($allOrgs as $org)

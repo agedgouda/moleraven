@@ -203,7 +203,10 @@ class Edit extends Component
     public function saveConnection(): void
     {
         if ($this->connectionModalType === 'character') {
-            $this->validate(['connectionModalCharacterId' => 'required|integer|exists:characters,id']);
+            $this->validate(
+                ['connectionModalCharacterId' => 'required|integer|exists:characters,id'],
+                ['connectionModalCharacterId.required' => 'You must select a character.'],
+            );
 
             $data = [
                 'character_id' => $this->connectionModalCharacterId,
@@ -219,7 +222,10 @@ class Edit extends Component
 
             unset($this->characterConnections, $this->allConnections);
         } elseif ($this->connectionModalType === 'npc') {
-            $this->validate(['connectionModalNpcId' => 'required|integer|exists:npcs,id']);
+            $this->validate(
+                ['connectionModalNpcId' => 'required|integer|exists:npcs,id'],
+                ['connectionModalNpcId.required' => 'You must select an NPC.'],
+            );
 
             $data = [
                 'npc_id' => $this->connectionModalNpcId,
@@ -235,7 +241,10 @@ class Edit extends Component
 
             unset($this->npcConnections, $this->allConnections);
         } else {
-            $this->validate(['connectionModalOrgId' => 'required|integer|exists:organizations,id']);
+            $this->validate(
+                ['connectionModalOrgId' => 'required|integer|exists:organizations,id'],
+                ['connectionModalOrgId.required' => 'You must select an organization.'],
+            );
 
             $data = [
                 'related_organization_id' => $this->connectionModalOrgId,

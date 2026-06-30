@@ -255,7 +255,7 @@
 
             @if ($connectionModalType === 'npc')
                 <flux:field>
-                    <flux:label>NPC <flux:badge color="red" size="sm">Required</flux:badge></flux:label>
+                    <flux:label>NPC</flux:label>
                     <flux:select wire:model="connectionModalNpcId">
                         <option value="">Select NPC...</option>
                         @foreach($allNpcs as $npc)
@@ -274,7 +274,7 @@
                 </flux:field>
             @else
                 <flux:field>
-                    <flux:label>Organization <flux:badge color="red" size="sm">Required</flux:badge></flux:label>
+                    <flux:label>Organization</flux:label>
                     <flux:select wire:model="connectionModalOrgId">
                         <option value="">Select organization...</option>
                         @foreach($allOrgs as $org)

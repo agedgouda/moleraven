@@ -27,6 +27,9 @@
                     <flux:sidebar.item icon="globe-alt" :href="route('planets.index')" :current="request()->routeIs('planets.*')" wire:navigate>
                         {{ __('Planets') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="bug-ant" :href="route('animals.index')" :current="request()->routeIs('animals.*')" wire:navigate>
+                        {{ __('Animals') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

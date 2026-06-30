@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Animals;
 use App\Livewire\Npcs;
 use App\Livewire\Organizations;
 use App\Livewire\Party;
@@ -27,6 +28,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/planets', Planets\Index::class)->name('planets.index');
     Route::get('/planets/create', Planets\Create::class)->name('planets.create');
     Route::get('/planets/{planet}/edit', Planets\Edit::class)->name('planets.edit');
+
+    Route::get('/animals', Animals\Index::class)->name('animals.index');
+    Route::get('/animals/create', Animals\Create::class)->name('animals.create');
+    Route::get('/animals/{animal}/edit', Animals\Edit::class)->name('animals.edit');
 });
 
 require __DIR__.'/settings.php';

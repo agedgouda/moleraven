@@ -24,7 +24,7 @@
     @endif
 </div>
 
-<flux:modal name="skill-modal" class="md:w-80">
+<flux:modal wire:model="skillModalOpen" class="md:w-80">
     <flux:heading>{{ $editingSkillId ? 'Edit Skill' : 'Add Skill' }}</flux:heading>
     <div class="mt-4 space-y-4">
         <flux:field>
@@ -45,6 +45,9 @@
     </div>
     <div class="mt-6 flex justify-end gap-2">
         <flux:modal.close><flux:button variant="ghost">Cancel</flux:button></flux:modal.close>
-        <flux:button wire:click="saveSkill" variant="primary">Save</flux:button>
+        @if (!$editingSkillId)
+            <flux:button wire:click="saveSkill(true)">Save and New</flux:button>
+        @endif
+        <flux:button wire:click="saveSkill" variant="primary">Save and Close</flux:button>
     </div>
 </flux:modal>

@@ -6,6 +6,7 @@ use App\Enums\CharacterStatus;
 use App\Enums\NpcRelationshipType;
 use App\Enums\OrganizationRelationshipType;
 use App\Livewire\Concerns\HasConnectionFilters;
+use App\Livewire\Concerns\HasSkillModal;
 use App\Models\CareerTerm;
 use App\Models\Character;
 use App\Models\CharacterNpc;
@@ -14,7 +15,6 @@ use App\Models\InventoryItem;
 use App\Models\Npc;
 use App\Models\Organization;
 use App\Models\Planet;
-use App\Models\Skill;
 use App\Support\Mgt2;
 use Flux\Flux;
 use Illuminate\Support\Collection;
@@ -30,7 +30,7 @@ use Livewire\WithFileUploads;
 #[Title('Edit PC')]
 class Edit extends Component
 {
-    use HasConnectionFilters, WithFileUploads;
+    use HasConnectionFilters, HasSkillModal, WithFileUploads;
 
     public Character $character;
 
@@ -65,13 +65,6 @@ class Edit extends Component
     public int $education = 7;
 
     public int $socialStanding = 7;
-
-    // --- Skill modal ---
-    public ?int $editingSkillId = null;
-
-    public string $skillModalName = '';
-
-    public int $skillModalLevel = 0;
 
     // --- Career term modal ---
     public ?int $editingCareerTermId = null;
@@ -204,52 +197,9 @@ class Edit extends Component
         Flux::toast('PC saved.');
     }
 
-    // ---- Skills ----
-
-    public function openSkillModal(?int $skillId = null): void
+    protected function skillable(): Character
     {
-        if ($skillId) {
-            $skill = Skill::find($skillId);
-            $this->editingSkillId = $skillId;
-            $this->skillModalName = $skill->name;
-            $this->skillModalLevel = $skill->level;
-        } else {
-            $this->editingSkillId = null;
-            $this->skillModalName = '';
-            $this->skillModalLevel = 0;
-        }
-
-        $this->modal('skill-modal')->show();
-    }
-
-    public function saveSkill(): void
-    {
-        $this->validate([
-            'skillModalName' => 'required|string|max:255',
-            'skillModalLevel' => 'required|integer|min:0|max:6',
-        ]);
-
-        if ($this->editingSkillId) {
-            Skill::find($this->editingSkillId)->update([
-                'name' => $this->skillModalName,
-                'level' => $this->skillModalLevel,
-            ]);
-        } else {
-            $this->character->skills()->create([
-                'name' => $this->skillModalName,
-                'level' => $this->skillModalLevel,
-            ]);
-        }
-
-        unset($this->skills);
-        $this->modal('skill-modal')->close();
-        Flux::toast('Skill saved.');
-    }
-
-    public function deleteSkill(int $skillId): void
-    {
-        Skill::findOrFail($skillId)->delete();
-        unset($this->skills);
+        return $this->character;
     }
 
     // ---- Career Terms ----
@@ -393,7 +343,10 @@ class Edit extends Component
     public function saveConnection(): void
     {
         if ($this->connectionModalType === 'npc') {
-            $this->validate(['connectionModalNpcId' => 'required|integer|exists:npcs,id']);
+            $this->validate(
+                ['connectionModalNpcId' => 'required|integer|exists:npcs,id'],
+                ['connectionModalNpcId.required' => 'You must select an NPC.'],
+            );
 
             $data = [
                 'npc_id' => $this->connectionModalNpcId,
@@ -409,7 +362,10 @@ class Edit extends Component
 
             unset($this->allConnections);
         } else {
-            $this->validate(['connectionModalOrgId' => 'required|integer|exists:organizations,id']);
+            $this->validate(
+                ['connectionModalOrgId' => 'required|integer|exists:organizations,id'],
+                ['connectionModalOrgId.required' => 'You must select an organization.'],
+            );
 
             $data = [
                 'organization_id' => $this->connectionModalOrgId,
