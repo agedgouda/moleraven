@@ -22,12 +22,7 @@
 
         <flux:field>
             <flux:label>Base of Operations</flux:label>
-            <flux:select wire:model="baseOfOperationsPlanetId" placeholder="Select planet...">
-                <option value="">— none —</option>
-                @foreach($planets as $id => $label)
-                    <option value="{{ $id }}">{{ $label }}</option>
-                @endforeach
-            </flux:select>
+            <livewire:components.planet-select wire:model="baseOfOperationsPlanetId" />
         </flux:field>
 
         <flux:field>

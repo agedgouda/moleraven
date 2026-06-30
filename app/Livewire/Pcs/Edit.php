@@ -14,7 +14,6 @@ use App\Models\CharacterOrganization;
 use App\Models\InventoryItem;
 use App\Models\Npc;
 use App\Models\Organization;
-use App\Models\Planet;
 use App\Support\Mgt2;
 use Flux\Flux;
 use Illuminate\Support\Collection;
@@ -435,12 +434,10 @@ class Edit extends Component
 
     public function render(): View
     {
-        $planets = Planet::orderBy('sector')->orderBy('hex')->get()->pluck('display_label', 'id');
         $allNpcs = Npc::orderBy('name')->get(['id', 'name']);
         $allOrgs = Organization::orderBy('name')->get(['id', 'name']);
 
         return view('livewire.pcs.edit', [
-            'planets' => $planets,
             'statOptions' => Mgt2::statOptions(),
             'statusOptions' => CharacterStatus::cases(),
             'mgt2Skills' => $this->availableSkills(),

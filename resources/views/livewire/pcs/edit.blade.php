@@ -34,12 +34,7 @@
 
                     <flux:field>
                         <flux:label>Last Known Planet</flux:label>
-                        <flux:select wire:model="lastKnownPlanetId" placeholder="Select planet...">
-                            <option value="">— none —</option>
-                            @foreach($planets as $id => $label)
-                                <option value="{{ $id }}">{{ $label }}</option>
-                            @endforeach
-                        </flux:select>
+                        <livewire:components.planet-select wire:model="lastKnownPlanetId" />
                     </flux:field>
                 </div>
             </div>
@@ -68,12 +63,7 @@
                         <div class="mb-4 grid grid-cols-2 gap-4">
                             <flux:field>
                                 <flux:label>Homeworld</flux:label>
-                                <flux:select wire:model="homeworldPlanetId" placeholder="Select planet...">
-                                    <option value="">— none —</option>
-                                    @foreach($planets as $id => $label)
-                                        <option value="{{ $id }}">{{ $label }}</option>
-                                    @endforeach
-                                </flux:select>
+                                <livewire:components.planet-select wire:model="homeworldPlanetId" />
                             </flux:field>
 
                             <flux:field>

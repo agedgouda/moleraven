@@ -29,12 +29,7 @@
 
                     <flux:field>
                         <flux:label>Native Planet</flux:label>
-                        <flux:select wire:model="nativePlanetId" placeholder="Select planet...">
-                            <option value="">— none —</option>
-                            @foreach($planets as $id => $label)
-                                <option value="{{ $id }}">{{ $label }}</option>
-                            @endforeach
-                        </flux:select>
+                        <livewire:components.planet-select wire:model="nativePlanetId" />
                     </flux:field>
 
                     <div class="grid grid-cols-2 gap-4">

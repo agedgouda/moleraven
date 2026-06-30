@@ -4,7 +4,6 @@ namespace App\Livewire\Party;
 
 use App\Models\Character;
 use App\Models\Party;
-use App\Models\Planet;
 use Flux\Flux;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -51,8 +50,6 @@ class Index extends Component
             ->orderBy('name')
             ->get();
 
-        $planets = Planet::orderBy('sector')->orderBy('hex')->get()->pluck('display_label', 'id');
-
-        return view('livewire.party.index', compact('characters', 'planets'));
+        return view('livewire.party.index', compact('characters'));
     }
 }

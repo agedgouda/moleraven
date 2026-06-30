@@ -6,12 +6,7 @@
     <div class="max-w-sm">
         <flux:field>
             <flux:label>Current Planet</flux:label>
-            <flux:select wire:model.live="currentPlanetId" placeholder="Select planet...">
-                <option value="">— none —</option>
-                @foreach($planets as $id => $label)
-                    <option value="{{ $id }}">{{ $label }}</option>
-                @endforeach
-            </flux:select>
+            <livewire:components.planet-select wire:model.live="currentPlanetId" />
         </flux:field>
     </div>
 

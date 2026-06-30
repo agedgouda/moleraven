@@ -8,7 +8,6 @@ use App\Livewire\Concerns\HasSkillModal;
 use App\Models\Animal;
 use App\Models\AnimalAttack;
 use App\Models\AnimalTrait;
-use App\Models\Planet;
 use App\Support\Mgt2;
 use Flux\Flux;
 use Illuminate\Support\Collection;
@@ -245,13 +244,12 @@ class Edit extends Component
 
     public function render(): View
     {
-        $planets = Planet::orderBy('sector')->orderBy('hex')->get()->pluck('display_label', 'id');
         $mgt2Skills = Mgt2::SKILLS;
         $behaviorTypes = BehaviorType::cases();
         $behaviorSubtypes = $this->behaviorType
             ? BehaviorSubtype::forType(BehaviorType::from($this->behaviorType))
             : [];
 
-        return view('livewire.animals.edit', compact('planets', 'mgt2Skills', 'behaviorTypes', 'behaviorSubtypes'));
+        return view('livewire.animals.edit', compact('mgt2Skills', 'behaviorTypes', 'behaviorSubtypes'));
     }
 }

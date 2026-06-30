@@ -3,7 +3,6 @@
 namespace App\Livewire\Organizations;
 
 use App\Models\Organization;
-use App\Models\Planet;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -40,10 +39,6 @@ class Create extends Component
 
     public function render(): View
     {
-        $planets = Planet::orderBy('sector')->orderBy('hex')->get()->pluck('display_label', 'id');
-
-        return view('livewire.organizations.create', [
-            'planets' => $planets,
-        ]);
+        return view('livewire.organizations.create');
     }
 }

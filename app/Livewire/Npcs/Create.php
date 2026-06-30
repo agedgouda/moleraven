@@ -3,7 +3,6 @@
 namespace App\Livewire\Npcs;
 
 use App\Models\Npc;
-use App\Models\Planet;
 use App\Support\Mgt2;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -68,10 +67,7 @@ class Create extends Component
 
     public function render(): View
     {
-        $planets = Planet::orderBy('sector')->orderBy('hex')->get()->pluck('display_label', 'id');
-
         return view('livewire.npcs.create', [
-            'planets' => $planets,
             'statOptions' => Mgt2::statOptions(),
         ]);
     }

@@ -11,7 +11,6 @@ use App\Models\Npc;
 use App\Models\NpcOrganization;
 use App\Models\Organization;
 use App\Models\OrganizationOrganization;
-use App\Models\Planet;
 use Flux\Flux;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -284,11 +283,9 @@ class Edit extends Component
         $allCharacters = Character::orderBy('name')->get(['id', 'name']);
         $allNpcs = Npc::orderBy('name')->get(['id', 'name']);
         $allOrgs = Organization::where('id', '!=', $this->organization->id)->orderBy('name')->get(['id', 'name']);
-        $planets = Planet::orderBy('sector')->orderBy('hex')->get()->pluck('display_label', 'id');
 
         return view('livewire.organizations.edit', [
             'types' => self::TYPES,
-            'planets' => $planets,
             'orgRelationshipTypes' => OrganizationRelationshipType::cases(),
             'npcRelationshipTypes' => NpcRelationshipType::cases(),
             'allCharacters' => $allCharacters,
