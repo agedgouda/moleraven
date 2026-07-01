@@ -1,32 +1,20 @@
-<div class="flex h-full w-full flex-1 flex-col gap-6 py-6 pl-20 pr-6">
-    <div class="flex items-center gap-3">
-        <x-entity-icon :model="$npc" class="h-10 w-10 rounded-full" />
-        <flux:heading size="xl">{{ $npc->name }}</flux:heading>
-        <span class="font-mono text-lg tracking-widest text-zinc-500 dark:text-zinc-400">{{ $npc->uppString() }}</span>
-    </div>
-
-    {{-- Identity: full width with image on the right --}}
-    <div class="flex gap-6 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700">
-        <div class="flex-1 space-y-3">
-            <flux:heading size="lg">Identity</flux:heading>
-            <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                @if ($npc->homeworld)
-                    <div class="text-zinc-500 dark:text-zinc-400">Homeworld</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">{{ $npc->homeworld->display_label }}</div>
-                @endif
-                @if ($npc->lastKnownPlanet)
-                    <div class="text-zinc-500 dark:text-zinc-400">Last Known Planet</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">{{ $npc->lastKnownPlanet->display_label }}</div>
-                @endif
-                @if ($npc->age)
-                    <div class="text-zinc-500 dark:text-zinc-400">Age</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">{{ $npc->age }}</div>
-                @endif
-            </div>
+<x-entity-show :name="$npc->name" :upp="$npc->uppString()" :image-path="$npc->image_path" :image-alt="$npc->name">
+    <x-slot name="identity">
+        <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+            @if ($npc->homeworld)
+                <div class="text-zinc-500 dark:text-zinc-400">Homeworld</div>
+                <div class="text-zinc-800 dark:text-zinc-200">{{ $npc->homeworld->display_label }}</div>
+            @endif
+            @if ($npc->lastKnownPlanet)
+                <div class="text-zinc-500 dark:text-zinc-400">Last Known Planet</div>
+                <div class="text-zinc-800 dark:text-zinc-200">{{ $npc->lastKnownPlanet->display_label }}</div>
+            @endif
+            @if ($npc->age)
+                <div class="text-zinc-500 dark:text-zinc-400">Age</div>
+                <div class="text-zinc-800 dark:text-zinc-200">{{ $npc->age }}</div>
+            @endif
         </div>
-        <img src="{{ $npc->image_path ? asset('storage/' . $npc->image_path) : asset('images/tas.svg') }}"
-             alt="{{ $npc->name }}" class="h-40 w-40 rounded-lg object-cover shrink-0">
-    </div>
+    </x-slot>
 
     {{-- Two columns: connections | UPP + skills --}}
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -115,4 +103,4 @@
             @endif
         </div>
     </div>
-</div>
+</x-entity-show>

@@ -1,27 +1,16 @@
-<div class="flex h-full w-full flex-1 flex-col gap-6 py-6 pl-20 pr-6">
-    <div class="flex items-center gap-3">
-        <x-entity-icon :model="$organization" class="h-10 w-10 rounded-full" />
-        <flux:heading size="xl">{{ $organization->name }}</flux:heading>
-    </div>
-
-    {{-- Identity: full width with image on the right --}}
-    <div class="flex gap-6 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700">
-        <div class="flex-1 space-y-3">
-            <flux:heading size="lg">Identity</flux:heading>
-            <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                @if ($organization->type)
-                    <div class="text-zinc-500 dark:text-zinc-400">Type</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">{{ $organization->type }}</div>
-                @endif
-                @if ($organization->baseOfOperations)
-                    <div class="text-zinc-500 dark:text-zinc-400">Base of Operations</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">{{ $organization->baseOfOperations->display_label }}</div>
-                @endif
-            </div>
+<x-entity-show :name="$organization->name" :image-path="$organization->image_path" :image-alt="$organization->name">
+    <x-slot name="identity">
+        <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+            @if ($organization->type)
+                <div class="text-zinc-500 dark:text-zinc-400">Type</div>
+                <div class="text-zinc-800 dark:text-zinc-200">{{ $organization->type }}</div>
+            @endif
+            @if ($organization->baseOfOperations)
+                <div class="text-zinc-500 dark:text-zinc-400">Base of Operations</div>
+                <div class="text-zinc-800 dark:text-zinc-200">{{ $organization->baseOfOperations->display_label }}</div>
+            @endif
         </div>
-        <img src="{{ $organization->image_path ? asset('storage/' . $organization->image_path) : asset('images/tas.svg') }}"
-             alt="{{ $organization->name }}" class="h-40 w-40 rounded-lg object-cover shrink-0">
-    </div>
+    </x-slot>
 
     {{-- Two columns: connections + notes | summary --}}
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -94,4 +83,4 @@
             </div>
         </div>
     </div>
-</div>
+</x-entity-show>

@@ -1,38 +1,24 @@
-<div class="flex h-full w-full flex-1 flex-col gap-6 py-6 pl-20 pr-6">
-    <div class="flex items-center gap-3">
-        <x-entity-icon :model="$character" class="h-10 w-10 rounded-full" />
-        <div>
-            <flux:heading size="xl">{{ $character->name }}</flux:heading>
-            <span class="font-mono text-sm tracking-widest text-zinc-400">{{ $character->uppString() }}</span>
+<x-entity-show :name="$character->name" :upp="$character->uppString()" :image-path="$character->image_path" :image-alt="$character->name">
+    <x-slot name="identity">
+        <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+            @if ($character->lastKnownPlanet)
+                <div class="text-zinc-500 dark:text-zinc-400">Last Known Planet</div>
+                <div class="text-zinc-800 dark:text-zinc-200">{{ $character->lastKnownPlanet->display_label }}</div>
+            @endif
+            @if ($character->homeworld)
+                <div class="text-zinc-500 dark:text-zinc-400">Homeworld</div>
+                <div class="text-zinc-800 dark:text-zinc-200">{{ $character->homeworld->display_label }}</div>
+            @endif
+            @if ($character->age)
+                <div class="text-zinc-500 dark:text-zinc-400">Age</div>
+                <div class="text-zinc-800 dark:text-zinc-200">{{ $character->age }}</div>
+            @endif
+            @if ($character->credits)
+                <div class="text-zinc-500 dark:text-zinc-400">Credits</div>
+                <div class="font-mono text-zinc-800 dark:text-zinc-200">Cr{{ number_format($character->credits) }}</div>
+            @endif
         </div>
-    </div>
-
-    {{-- Identity: full width with image on the right --}}
-    <div class="flex gap-6 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700">
-        <div class="flex-1 space-y-3">
-            <flux:heading size="lg">Identity</flux:heading>
-            <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                @if ($character->lastKnownPlanet)
-                    <div class="text-zinc-500 dark:text-zinc-400">Last Known Planet</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">{{ $character->lastKnownPlanet->display_label }}</div>
-                @endif
-                @if ($character->homeworld)
-                    <div class="text-zinc-500 dark:text-zinc-400">Homeworld</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">{{ $character->homeworld->display_label }}</div>
-                @endif
-                @if ($character->age)
-                    <div class="text-zinc-500 dark:text-zinc-400">Age</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">{{ $character->age }}</div>
-                @endif
-                @if ($character->credits)
-                    <div class="text-zinc-500 dark:text-zinc-400">Credits</div>
-                    <div class="font-mono text-zinc-800 dark:text-zinc-200">Cr{{ number_format($character->credits) }}</div>
-                @endif
-            </div>
-        </div>
-        <img src="{{ $character->image_path ? asset('storage/' . $character->image_path) : asset('images/tas.svg') }}"
-             alt="{{ $character->name }}" class="h-40 w-40 rounded-lg object-cover shrink-0">
-    </div>
+    </x-slot>
 
     {{-- Two columns: left (tabs + diary + notes) | right (UPP + skills) --}}
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -116,7 +102,7 @@
                 </div>
 
                 {{-- Inventory --}}
-                <div x-show="tab === 'inventory'" class="p-6 space-y-3">
+                <div x-show="tab === 'inventory'" class="space-y-3 p-6">
                     @if ($character->credits)
                         <div class="text-sm text-zinc-500 dark:text-zinc-400">Credits: <span class="font-mono font-semibold text-zinc-800 dark:text-zinc-200">Cr{{ number_format($character->credits) }}</span></div>
                     @endif
@@ -203,4 +189,4 @@
             @endif
         </div>
     </div>
-</div>
+</x-entity-show>

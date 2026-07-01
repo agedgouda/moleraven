@@ -1,48 +1,38 @@
-<div class="flex h-full w-full flex-1 flex-col gap-6 py-6 pl-20 pr-6">
-    <div class="flex items-center gap-3">
-        <x-entity-icon :model="$animal" class="h-10 w-10 rounded-full" />
-        <flux:heading size="xl">
-            {{ $animal->name }}
-            @if ($animal->parent)
-                <span class="text-base font-normal text-zinc-400">(variant of {{ $animal->parent->name }})</span>
-            @endif
-        </flux:heading>
-    </div>
+<x-entity-show :name="$animal->name" :image-path="$animal->image_path" :image-alt="$animal->name">
+    @if ($animal->parent)
+        <x-slot name="subtitle">
+            <div class="text-base text-zinc-400">(variant of {{ $animal->parent->name }})</div>
+        </x-slot>
+    @endif
 
-    {{-- Identity: full width with image on the right --}}
-    <div class="flex gap-6 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700">
-        <div class="flex-1 space-y-3">
-            <flux:heading size="lg">Identity</flux:heading>
-            <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                @if ($animal->nativePlanet)
-                    <div class="text-zinc-500 dark:text-zinc-400">Native Planet</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">{{ $animal->nativePlanet->display_label }}</div>
-                @endif
-                @if ($animal->hits)
-                    <div class="text-zinc-500 dark:text-zinc-400">Hits</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">{{ $animal->hits }}</div>
-                @endif
-                @if ($animal->speed)
-                    <div class="text-zinc-500 dark:text-zinc-400">Speed</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">{{ $animal->speed }}m</div>
-                @endif
-                @if ($animal->behavior_type)
-                    <div class="text-zinc-500 dark:text-zinc-400">Behavior</div>
-                    <div class="text-zinc-800 dark:text-zinc-200">
-                        {{ $animal->behavior_type->label() }}
-                        @if ($animal->behavior_subtype)
-                            — {{ $animal->behavior_subtype->label() }}
-                        @endif
-                    </div>
-                @endif
-                @if ($animal->notes)
-                    <div class="col-span-2 mt-2 text-zinc-700 dark:text-zinc-300">{{ $animal->notes }}</div>
-                @endif
-            </div>
+    <x-slot name="identity">
+        <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+            @if ($animal->nativePlanet)
+                <div class="text-zinc-500 dark:text-zinc-400">Native Planet</div>
+                <div class="text-zinc-800 dark:text-zinc-200">{{ $animal->nativePlanet->display_label }}</div>
+            @endif
+            @if ($animal->hits)
+                <div class="text-zinc-500 dark:text-zinc-400">Hits</div>
+                <div class="text-zinc-800 dark:text-zinc-200">{{ $animal->hits }}</div>
+            @endif
+            @if ($animal->speed)
+                <div class="text-zinc-500 dark:text-zinc-400">Speed</div>
+                <div class="text-zinc-800 dark:text-zinc-200">{{ $animal->speed }}m</div>
+            @endif
+            @if ($animal->behavior_type)
+                <div class="text-zinc-500 dark:text-zinc-400">Behavior</div>
+                <div class="text-zinc-800 dark:text-zinc-200">
+                    {{ $animal->behavior_type->label() }}
+                    @if ($animal->behavior_subtype)
+                        — {{ $animal->behavior_subtype->label() }}
+                    @endif
+                </div>
+            @endif
+            @if ($animal->notes)
+                <div class="col-span-2 mt-2 text-zinc-700 dark:text-zinc-300">{{ $animal->notes }}</div>
+            @endif
         </div>
-        <img src="{{ $animal->image_path ? asset('storage/' . $animal->image_path) : asset('images/tas.svg') }}"
-             alt="{{ $animal->name }}" class="h-40 w-40 rounded-lg object-cover shrink-0">
-    </div>
+    </x-slot>
 
     {{-- 2x2 grid: skills | attacks / traits | variants --}}
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -129,4 +119,4 @@
         @endif
 
     </div>
-</div>
+</x-entity-show>
