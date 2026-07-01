@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Enums\BehaviorSubtype;
 use App\Enums\BehaviorType;
+use Database\Factories\AnimalFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -24,6 +26,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['name', 'native_planet_id', 'parent_animal_id', 'hits', 'speed', 'behavior_type', 'behavior_subtype', 'notes', 'image_path'])]
 class Animal extends Model
 {
+    /** @use HasFactory<AnimalFactory> */
+    use HasFactory;
+
     protected $casts = [
         'behavior_type' => BehaviorType::class,
         'behavior_subtype' => BehaviorSubtype::class,

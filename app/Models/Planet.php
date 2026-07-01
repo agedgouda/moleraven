@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $sector
  * @property string $hex
  * @property string|null $notes
+ * @property-read string $name
  * @property-read string $display_label
  */
 #[Fillable(['sector', 'hex', 'notes'])]
@@ -21,6 +22,11 @@ class Planet extends Model
 {
     /** @use HasFactory<PlanetFactory> */
     use HasFactory;
+
+    protected function name(): Attribute
+    {
+        return Attribute::get(fn () => $this->display_label);
+    }
 
     protected function displayLabel(): Attribute
     {

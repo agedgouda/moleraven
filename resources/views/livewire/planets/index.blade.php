@@ -24,9 +24,10 @@
                 </thead>
                 <tbody class="divide-y divide-zinc-100 dark:divide-zinc-700">
                     @foreach ($planets as $planet)
-                        <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                        <tr class="{{ $loop->odd ? 'bg-zinc-200 dark:bg-zinc-800/40' : '' }} hover:bg-zinc-100 dark:hover:bg-zinc-700/40">
                             <td class="px-4 py-3">
-                                <a href="{{ route('planets.edit', $planet) }}" class="font-semibold text-zinc-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400" wire:navigate>
+                                <a href="{{ route('planets.edit', $planet) }}" class="flex items-center gap-2 font-semibold text-zinc-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400" wire:navigate>
+                                    <x-planet-icon :planet="$planet" class="h-7 w-7 shrink-0" />
                                     {{ $planet->display_label }}
                                 </a>
                             </td>

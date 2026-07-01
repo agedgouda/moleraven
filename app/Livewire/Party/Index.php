@@ -3,6 +3,7 @@
 namespace App\Livewire\Party;
 
 use App\Models\Character;
+use App\Models\DiaryEntry;
 use App\Models\Party;
 use Flux\Flux;
 use Illuminate\View\View;
@@ -50,6 +51,12 @@ class Index extends Component
             ->orderBy('name')
             ->get();
 
-        return view('livewire.party.index', compact('characters'));
+        $diaryEntries = DiaryEntry::with('character')
+            ->whereHas('character', fn ($q) => $q->where('status', 'active'))
+            ->orderByDesc('entry_date')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('livewire.party.index', compact('characters', 'diaryEntries'));
     }
 }

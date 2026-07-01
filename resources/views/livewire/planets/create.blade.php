@@ -1,7 +1,7 @@
 <div class="flex h-full w-full flex-1 flex-col gap-6 p-6">
     <div class="flex items-center gap-3">
         <flux:button href="{{ route('planets.index') }}" icon="arrow-left" variant="ghost" size="sm" wire:navigate />
-        <flux:heading size="xl">Add Planet</flux:heading>
+        <span class="text-2xl font-semibold text-zinc-800 dark:text-white">Add Planet</span>
     </div>
 
     <div class="max-w-xl space-y-6">

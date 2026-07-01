@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Animals;
+use App\Livewire\DiaryEntries;
 use App\Livewire\Npcs;
 use App\Livewire\Organizations;
 use App\Livewire\Party;
@@ -16,6 +17,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pcs', Pcs\Index::class)->name('pcs.index');
     Route::get('/pcs/create', Pcs\Create::class)->name('pcs.create');
     Route::get('/pcs/{character}/edit', Pcs\Edit::class)->name('pcs.edit');
+    Route::get('/pcs/{character}/diary/create', DiaryEntries\Create::class)->name('diary.create');
+    Route::get('/diary/{diaryEntry}/edit', DiaryEntries\Edit::class)->name('diary.edit');
 
     Route::get('/npcs', Npcs\Index::class)->name('npcs.index');
     Route::get('/npcs/create', Npcs\Create::class)->name('npcs.create');
