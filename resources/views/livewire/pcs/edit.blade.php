@@ -158,7 +158,7 @@
         {{-- Right column: UPP, skills, NPCs, orgs (1/3) --}}
         <div class="space-y-6">
 
-            @include('livewire.shared.image-card', ['model' => $character])
+            <livewire:components.image-card :model="$character" folder="characters" />
 
             @include('livewire.shared.upp-card')
 

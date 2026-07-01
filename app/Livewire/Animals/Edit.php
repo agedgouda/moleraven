@@ -11,23 +11,19 @@ use App\Models\AnimalTrait;
 use App\Support\Mgt2;
 use Flux\Flux;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 #[Layout('layouts.app', ['title' => 'Edit Animal'])]
 #[Title('Edit Animal')]
 class Edit extends Component
 {
-    use HasSkillModal, WithFileUploads;
+    use HasSkillModal;
 
     public Animal $animal;
-
-    public $imageUpload;
 
     public string $name = '';
 
@@ -124,26 +120,6 @@ class Edit extends Component
     protected function skillable(): Animal
     {
         return $this->animal;
-    }
-
-    // --- Image ---
-
-    public function updatedImageUpload(): void
-    {
-        $this->validate(['imageUpload' => 'image|max:4096']);
-        if ($this->animal->image_path) {
-            Storage::disk('public')->delete($this->animal->image_path);
-        }
-        $path = $this->imageUpload->store('animals', 'public');
-        $this->animal->update(['image_path' => $path]);
-    }
-
-    public function deleteImage(): void
-    {
-        if ($this->animal->image_path) {
-            Storage::disk('public')->delete($this->animal->image_path);
-            $this->animal->update(['image_path' => null]);
-        }
     }
 
     // --- Attack modal ---

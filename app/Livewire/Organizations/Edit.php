@@ -13,19 +13,17 @@ use App\Models\Organization;
 use App\Models\OrganizationOrganization;
 use Flux\Flux;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 #[Layout('layouts.app', ['title' => 'Edit Organization'])]
 #[Title('Edit Organization')]
 class Edit extends Component
 {
-    use HasConnectionFilters, WithFileUploads;
+    use HasConnectionFilters;
 
     private const TYPES = [
         'Corporation', 'Government', 'Military', 'Criminal', 'Religious',
@@ -61,8 +59,6 @@ class Edit extends Component
 
     public string $connectionModalNotes = '';
 
-    public $imageUpload;
-
     public function mount(Organization $organization): void
     {
         $this->organization = $organization;
@@ -87,30 +83,6 @@ class Edit extends Component
         ]);
 
         Flux::toast('Organization saved.');
-    }
-
-    // ---- Image ----
-
-    public function updatedImageUpload(): void
-    {
-        $this->validate(['imageUpload' => 'image|max:4096']);
-
-        if ($this->organization->image_path) {
-            Storage::disk('public')->delete($this->organization->image_path);
-        }
-
-        $path = $this->imageUpload->store('organizations', 'public');
-        $this->organization->update(['image_path' => $path]);
-        $this->imageUpload = null;
-        Flux::toast('Image uploaded.');
-    }
-
-    public function deleteImage(): void
-    {
-        if ($this->organization->image_path) {
-            Storage::disk('public')->delete($this->organization->image_path);
-            $this->organization->update(['image_path' => null]);
-        }
     }
 
     // ---- Connections ----

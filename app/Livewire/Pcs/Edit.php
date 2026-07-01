@@ -17,23 +17,19 @@ use App\Models\Organization;
 use App\Support\Mgt2;
 use Flux\Flux;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 #[Layout('layouts.app', ['title' => 'Edit PC'])]
 #[Title('Edit PC')]
 class Edit extends Component
 {
-    use HasConnectionFilters, HasSkillModal, WithFileUploads;
+    use HasConnectionFilters, HasSkillModal;
 
     public Character $character;
-
-    public $imageUpload;
 
     // Core fields
     public string $name = '';
@@ -394,30 +390,6 @@ class Edit extends Component
         }
 
         unset($this->allConnections);
-    }
-
-    // ---- Image ----
-
-    public function updatedImageUpload(): void
-    {
-        $this->validate(['imageUpload' => 'image|max:4096']);
-
-        if ($this->character->image_path) {
-            Storage::disk('public')->delete($this->character->image_path);
-        }
-
-        $path = $this->imageUpload->store('characters', 'public');
-        $this->character->update(['image_path' => $path]);
-        $this->imageUpload = null;
-        Flux::toast('Image uploaded.');
-    }
-
-    public function deleteImage(): void
-    {
-        if ($this->character->image_path) {
-            Storage::disk('public')->delete($this->character->image_path);
-            $this->character->update(['image_path' => null]);
-        }
     }
 
     private function availableSkills(): array

@@ -14,23 +14,19 @@ use App\Models\Organization;
 use App\Support\Mgt2;
 use Flux\Flux;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 #[Layout('layouts.app', ['title' => 'Edit NPC'])]
 #[Title('Edit NPC')]
 class Edit extends Component
 {
-    use HasConnectionFilters, HasSkillModal, WithFileUploads;
+    use HasConnectionFilters, HasSkillModal;
 
     public Npc $npc;
-
-    public $imageUpload;
 
     public string $name = '';
 
@@ -228,30 +224,6 @@ class Edit extends Component
         } else {
             NpcOrganization::findOrFail($id)->delete();
             unset($this->allConnections);
-        }
-    }
-
-    // ---- Image ----
-
-    public function updatedImageUpload(): void
-    {
-        $this->validate(['imageUpload' => 'image|max:4096']);
-
-        if ($this->npc->image_path) {
-            Storage::disk('public')->delete($this->npc->image_path);
-        }
-
-        $path = $this->imageUpload->store('npcs', 'public');
-        $this->npc->update(['image_path' => $path]);
-        $this->imageUpload = null;
-        Flux::toast('Image uploaded.');
-    }
-
-    public function deleteImage(): void
-    {
-        if ($this->npc->image_path) {
-            Storage::disk('public')->delete($this->npc->image_path);
-            $this->npc->update(['image_path' => null]);
         }
     }
 

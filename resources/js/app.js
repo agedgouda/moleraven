@@ -2,6 +2,7 @@ import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 
 document.addEventListener('alpine:init', () => {
+
     Alpine.data('tiptap', (initialContent) => ({
         editor: null,
 

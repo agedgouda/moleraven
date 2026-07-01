@@ -168,7 +168,7 @@
 
         {{-- Right column --}}
         <div class="space-y-6">
-            @include('livewire.shared.image-card', ['model' => $animal])
+            <livewire:components.image-card :model="$animal" folder="animals" />
         </div>
     </div>
 

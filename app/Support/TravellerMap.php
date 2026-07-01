@@ -69,7 +69,10 @@ class TravellerMap
     /** @return array<string, string> */
     public static function sectors(): array
     {
-        return self::SECTORS;
+        $sectors = self::SECTORS;
+        ksort($sectors);
+
+        return $sectors;
     }
 
     /** @return array<string, string> */

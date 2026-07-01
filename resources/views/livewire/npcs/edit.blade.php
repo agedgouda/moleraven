@@ -57,7 +57,7 @@
 
         {{-- Right column: UPP + Skills (1/3 width) --}}
         <div class="space-y-4">
-            @include('livewire.shared.image-card', ['model' => $npc])
+            <livewire:components.image-card :model="$npc" folder="npcs" />
 
             @include('livewire.shared.upp-card')
 

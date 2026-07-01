@@ -52,7 +52,7 @@
 
         {{-- Right column (1/3 width) --}}
         <div class="space-y-4">
-            @include('livewire.shared.image-card', ['model' => $organization])
+            <livewire:components.image-card :model="$organization" folder="organizations" />
 
             <div class="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
                 <div class="px-6 pt-6 pb-4">
