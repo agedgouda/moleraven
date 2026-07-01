@@ -1,6 +1,6 @@
 <div class="flex h-full w-full flex-1 flex-col gap-6 p-6">
     <div class="flex items-center gap-3">
-        <flux:button href="{{ route('pcs.edit', $diaryEntry->character_id) }}" icon="arrow-left" variant="ghost" size="sm" wire:navigate />
+        <flux:button href="{{ $returnTo ?: route('home', ['entry_id' => $diaryEntry->id]) }}" icon="arrow-left" variant="ghost" size="sm" wire:navigate />
         <span class="text-2xl font-semibold text-zinc-800 dark:text-white">Edit Diary Entry</span>
     </div>
 
@@ -45,7 +45,7 @@
 
             <div class="flex gap-3">
                 <flux:button @click="$wire.entry = window._tiptapEditors['entry']?.getHTML() ?? null; $wire.save()" variant="primary">Save Entry</flux:button>
-                <flux:button href="{{ route('pcs.edit', $diaryEntry->character_id) }}" variant="ghost" wire:navigate>Cancel</flux:button>
+                <flux:button href="{{ $returnTo ?: route('home', ['entry_id' => $diaryEntry->id]) }}" variant="ghost" wire:navigate>Cancel</flux:button>
             </div>
         </div>
 

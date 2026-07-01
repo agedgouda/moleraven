@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $organization_id
  * @property OrganizationRelationshipType $relationship_type
  * @property string|null $notes
+ * @property-read Npc $npc
+ * @property-read Organization $organization
  */
 #[Fillable(['npc_id', 'organization_id', 'relationship_type', 'notes'])]
 class NpcOrganization extends Model
@@ -27,11 +29,13 @@ class NpcOrganization extends Model
         return ['relationship_type' => OrganizationRelationshipType::class];
     }
 
+    /** @return BelongsTo<Npc, $this> */
     public function npc(): BelongsTo
     {
         return $this->belongsTo(Npc::class);
     }
 
+    /** @return BelongsTo<Organization, $this> */
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);

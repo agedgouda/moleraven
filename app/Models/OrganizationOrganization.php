@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $related_organization_id
  * @property OrganizationRelationshipType $relationship_type
  * @property string|null $notes
+ * @property-read Organization $organization
+ * @property-read Organization $relatedOrganization
  */
 #[Fillable(['organization_id', 'related_organization_id', 'relationship_type', 'notes'])]
 class OrganizationOrganization extends Model
@@ -22,11 +24,13 @@ class OrganizationOrganization extends Model
         return ['relationship_type' => OrganizationRelationshipType::class];
     }
 
+    /** @return BelongsTo<Organization, $this> */
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
     }
 
+    /** @return BelongsTo<Organization, $this> */
     public function relatedOrganization(): BelongsTo
     {
         return $this->belongsTo(Organization::class, 'related_organization_id');

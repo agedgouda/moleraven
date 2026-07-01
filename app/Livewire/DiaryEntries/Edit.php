@@ -6,6 +6,7 @@ use App\Models\DiaryEntry;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 #[Layout('layouts.app', ['title' => 'Edit Diary Entry'])]
@@ -13,6 +14,9 @@ use Livewire\Component;
 class Edit extends Component
 {
     public DiaryEntry $diaryEntry;
+
+    #[Url(as: 'return_to')]
+    public string $returnTo = '';
 
     public string $entryDate = '';
 
@@ -39,6 +43,10 @@ class Edit extends Component
         $this->organizationIds = $diaryEntry->organizations()->pluck('organizations.id')->toArray();
         $this->animalIds = $diaryEntry->animals()->pluck('animals.id')->toArray();
         $this->planetIds = $diaryEntry->planets()->pluck('planets.id')->toArray();
+
+        if ($this->returnTo === '') {
+            $this->returnTo = url()->previous(route('home', ['entry_id' => $diaryEntry->id]));
+        }
     }
 
     public function save(): void
@@ -62,7 +70,8 @@ class Edit extends Component
         $this->diaryEntry->animals()->sync($this->animalIds);
         $this->diaryEntry->planets()->sync($this->planetIds);
 
-        $this->redirect(route('pcs.edit', $this->diaryEntry->character_id), navigate: true);
+        $back = $this->returnTo ?: route('home', ['entry_id' => $this->diaryEntry->id]);
+        $this->redirect($back, navigate: true);
     }
 
     public function render(): View

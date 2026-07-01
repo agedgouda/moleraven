@@ -10,7 +10,7 @@
             <div class="flex items-center gap-3">
                 <x-entity-icon :model="$character" class="h-8 w-8 shrink-0 rounded-full" />
                 <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300">{{ $character->name }}</span>
-                <flux:input wire:model="entryDate" placeholder="e.g. 1105-001" class="ml-auto max-w-xs" />
+                <div class="ml-auto w-32"><flux:input wire:model="entryDate" placeholder="1105-001" /></div>
             </div>
             <flux:error name="entryDate" />
 

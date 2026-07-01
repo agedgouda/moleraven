@@ -12,7 +12,7 @@
 @else
     <flux:brand name="Moleraven" {{ $attributes }}>
         <x-slot name="logo" class="flex aspect-square size-8 items-center justify-center rounded-md text-accent-foreground">
-
+            <x-app-logo-icon class="h-full w-auto" />
         </x-slot>
     </flux:brand>
 @endif

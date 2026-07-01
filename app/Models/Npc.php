@@ -42,26 +42,31 @@ class Npc extends Model
         ));
     }
 
+    /** @return BelongsTo<Planet, $this> */
     public function homeworld(): BelongsTo
     {
         return $this->belongsTo(Planet::class, 'homeworld_planet_id');
     }
 
+    /** @return BelongsTo<Planet, $this> */
     public function lastKnownPlanet(): BelongsTo
     {
         return $this->belongsTo(Planet::class, 'last_known_planet_id');
     }
 
+    /** @return HasMany<NpcSkill, $this> */
     public function skills(): HasMany
     {
         return $this->hasMany(NpcSkill::class)->orderBy('name');
     }
 
+    /** @return HasMany<CharacterNpc, $this> */
     public function characterConnections(): HasMany
     {
         return $this->hasMany(CharacterNpc::class);
     }
 
+    /** @return HasMany<NpcOrganization, $this> */
     public function organizations(): HasMany
     {
         return $this->hasMany(NpcOrganization::class);

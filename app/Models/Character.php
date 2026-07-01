@@ -66,41 +66,49 @@ class Character extends Model
         ));
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<Planet, $this> */
     public function homeworld(): BelongsTo
     {
         return $this->belongsTo(Planet::class, 'homeworld_planet_id');
     }
 
+    /** @return BelongsTo<Planet, $this> */
     public function lastKnownPlanet(): BelongsTo
     {
         return $this->belongsTo(Planet::class, 'last_known_planet_id');
     }
 
+    /** @return HasMany<CareerTerm, $this> */
     public function careerTerms(): HasMany
     {
         return $this->hasMany(CareerTerm::class)->orderBy('term');
     }
 
+    /** @return HasMany<Skill, $this> */
     public function skills(): HasMany
     {
         return $this->hasMany(Skill::class)->orderBy('name');
     }
 
+    /** @return HasMany<InventoryItem, $this> */
     public function inventoryItems(): HasMany
     {
         return $this->hasMany(InventoryItem::class)->orderBy('name');
     }
 
+    /** @return HasMany<CharacterNpc, $this> */
     public function characterNpcs(): HasMany
     {
         return $this->hasMany(CharacterNpc::class);
     }
 
+    /** @return HasMany<CharacterOrganization, $this> */
     public function organizations(): HasMany
     {
         return $this->hasMany(CharacterOrganization::class);

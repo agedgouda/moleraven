@@ -23,26 +23,31 @@ class Organization extends Model
     /** @use HasFactory<OrganizationFactory> */
     use HasFactory;
 
+    /** @return BelongsTo<Planet, $this> */
     public function baseOfOperations(): BelongsTo
     {
         return $this->belongsTo(Planet::class, 'base_of_operations_planet_id');
     }
 
+    /** @return HasMany<CharacterOrganization, $this> */
     public function characterMemberships(): HasMany
     {
         return $this->hasMany(CharacterOrganization::class);
     }
 
+    /** @return HasMany<NpcOrganization, $this> */
     public function npcMemberships(): HasMany
     {
         return $this->hasMany(NpcOrganization::class);
     }
 
+    /** @return HasMany<OrganizationOrganization, $this> */
     public function orgLinks(): HasMany
     {
         return $this->hasMany(OrganizationOrganization::class);
     }
 
+    /** @return HasMany<OrganizationOrganization, $this> */
     public function orgLinkedBy(): HasMany
     {
         return $this->hasMany(OrganizationOrganization::class, 'related_organization_id');

@@ -20,11 +20,13 @@ class Party extends Model
         return self::firstOrCreate([]);
     }
 
+    /** @return BelongsTo<Planet, $this> */
     public function currentPlanet(): BelongsTo
     {
         return $this->belongsTo(Planet::class, 'current_planet_id');
     }
 
+    /** @return HasMany<Character, $this> */
     public function members(): HasMany
     {
         return $this->hasMany(Character::class)->where('status', 'active');

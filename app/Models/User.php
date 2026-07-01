@@ -49,11 +49,13 @@ class User extends Authenticatable implements PasskeyUser
         ];
     }
 
+    /** @return HasMany<Character, $this> */
     public function characters(): HasMany
     {
         return $this->hasMany(Character::class);
     }
 
+    /** @return HasMany<Character, $this> */
     public function currentCharacter(): HasMany
     {
         return $this->hasMany(Character::class)->where('is_current', true);

@@ -21,6 +21,7 @@ class InventoryItem extends Model
     /** @use HasFactory<InventoryItemFactory> */
     use HasFactory;
 
+    /** @return BelongsTo<Character, $this> */
     public function character(): BelongsTo
     {
         return $this->belongsTo(Character::class);

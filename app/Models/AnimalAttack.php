@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['animal_id', 'name', 'damage', 'attack_traits'])]
 class AnimalAttack extends Model
 {
+    /** @return BelongsTo<Animal, $this> */
     public function animal(): BelongsTo
     {
         return $this->belongsTo(Animal::class);

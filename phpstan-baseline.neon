@@ -1,18 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$level\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Livewire/Animals/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Livewire/Animals/Edit.php
-
-		-
 			message: '#^Method App\\Livewire\\Animals\\Edit\:\:animalTraits\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
@@ -67,48 +55,6 @@ parameters:
 			path: app/Livewire/Npcs/Edit.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$character\.$#'
-			identifier: property.notFound
-			count: 3
-			path: app/Livewire/Npcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Livewire/Npcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$level\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Livewire/Npcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Livewire/Npcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$notes\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Livewire/Npcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organization\.$#'
-			identifier: property.notFound
-			count: 3
-			path: app/Livewire/Npcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$relationship_type\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Livewire/Npcs/Edit.php
-
-		-
 			message: '#^Method App\\Livewire\\Npcs\\Edit\:\:allConnections\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
@@ -139,16 +85,10 @@ parameters:
 			path: app/Livewire/Npcs/Edit.php
 
 		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 2
-			path: app/Livewire/Npcs/Edit.php
-
-		-
-			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 2
-			path: app/Livewire/Npcs/Edit.php
+			message: '#^Method App\\Livewire\\Npcs\\Show\:\:connections\(\) should return Illuminate\\Support\\Collection\<int, array\{model\: App\\Models\\Character\|App\\Models\\Organization, name\: string, label\: string, relation\: string, notes\: string\|null, route\: string\|null\}\> but returns Illuminate\\Support\\Collection\<int, array\{model\: App\\Models\\Character\|App\\Models\\Organization, name\: string, label\: string, relation\: string, notes\: string\|null, route\: string\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Livewire/Npcs/Show.php
 
 		-
 			message: '#^Access to an undefined property App\\Livewire\\Organizations\\Edit\:\:\$characterConnections\.$#'
@@ -166,36 +106,6 @@ parameters:
 			message: '#^Access to an undefined property App\\Livewire\\Organizations\\Edit\:\:\$orgConnections\.$#'
 			identifier: property.notFound
 			count: 1
-			path: app/Livewire/Organizations/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Livewire/Organizations/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$notes\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Livewire/Organizations/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organization\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Livewire/Organizations/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$relatedOrganization\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Livewire/Organizations/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$relationship_type\.$#'
-			identifier: property.notFound
-			count: 2
 			path: app/Livewire/Organizations/Edit.php
 
 		-
@@ -235,16 +145,10 @@ parameters:
 			path: app/Livewire/Organizations/Edit.php
 
 		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 2
-			path: app/Livewire/Organizations/Edit.php
-
-		-
-			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 2
-			path: app/Livewire/Organizations/Edit.php
+			message: '#^Method App\\Livewire\\Organizations\\Show\:\:connections\(\) should return Illuminate\\Support\\Collection\<int, array\{model\: App\\Models\\Character\|App\\Models\\Npc\|App\\Models\\Organization, name\: string, label\: string, relation\: string, notes\: string\|null, route\: string\|null\}\> but returns Illuminate\\Support\\Collection\<int, array\{model\: App\\Models\\Character\|App\\Models\\Npc\|App\\Models\\Organization, name\: string, label\: string, relation\: string, notes\: string\|null, route\: string\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Livewire/Organizations/Show.php
 
 		-
 			message: '#^Access to an undefined property App\\Livewire\\Pcs\\Edit\:\:\$careerTerms\.$#'
@@ -254,48 +158,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property App\\Livewire\\Pcs\\Edit\:\:\$skills\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Livewire/Pcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Livewire/Pcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$level\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Livewire/Pcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Livewire/Pcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$notes\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Livewire/Pcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$npc\.$#'
-			identifier: property.notFound
-			count: 3
-			path: app/Livewire/Pcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$organization\.$#'
-			identifier: property.notFound
-			count: 3
-			path: app/Livewire/Pcs/Edit.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$relationship_type\.$#'
 			identifier: property.notFound
 			count: 2
 			path: app/Livewire/Pcs/Edit.php
@@ -343,16 +205,10 @@ parameters:
 			path: app/Livewire/Pcs/Edit.php
 
 		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 2
-			path: app/Livewire/Pcs/Edit.php
-
-		-
-			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 2
-			path: app/Livewire/Pcs/Edit.php
+			message: '#^Method App\\Livewire\\Pcs\\Show\:\:connections\(\) should return Illuminate\\Support\\Collection\<int, array\{model\: App\\Models\\Npc\|App\\Models\\Organization, name\: string, label\: string, relation\: string, notes\: string\|null, route\: string\}\> but returns Illuminate\\Support\\Collection\<int, array\{model\: App\\Models\\Npc\|App\\Models\\Organization, name\: string, label\: string, relation\: string, notes\: string\|null, route\: string\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Livewire/Pcs/Show.php
 
 		-
 			message: '#^Method App\\Livewire\\Planets\\Create\:\:hexOptions\(\) return type has no value type specified in iterable type array\.$#'
@@ -373,268 +229,10 @@ parameters:
 			path: app/Livewire/Planets/Edit.php
 
 		-
-			message: '#^Method App\\Models\\Animal\:\:attacks\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Animal.php
-
-		-
-			message: '#^Method App\\Models\\Animal\:\:nativePlanet\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Animal.php
-
-		-
-			message: '#^Method App\\Models\\Animal\:\:parent\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Animal.php
-
-		-
-			message: '#^Method App\\Models\\Animal\:\:skills\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Animal.php
-
-		-
-			message: '#^Method App\\Models\\Animal\:\:traits\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Animal.php
-
-		-
-			message: '#^Method App\\Models\\Animal\:\:variants\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Animal.php
-
-		-
-			message: '#^Method App\\Models\\AnimalAttack\:\:animal\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/AnimalAttack.php
-
-		-
-			message: '#^Method App\\Models\\AnimalSkill\:\:animal\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/AnimalSkill.php
-
-		-
-			message: '#^Method App\\Models\\AnimalTrait\:\:animal\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/AnimalTrait.php
-
-		-
-			message: '#^Method App\\Models\\CareerTerm\:\:character\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/CareerTerm.php
-
-		-
-			message: '#^Method App\\Models\\Character\:\:careerTerms\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Character.php
-
-		-
-			message: '#^Method App\\Models\\Character\:\:characterNpcs\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Character.php
-
-		-
-			message: '#^Method App\\Models\\Character\:\:homeworld\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Character.php
-
-		-
-			message: '#^Method App\\Models\\Character\:\:inventoryItems\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Character.php
-
-		-
-			message: '#^Method App\\Models\\Character\:\:lastKnownPlanet\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Character.php
-
-		-
-			message: '#^Method App\\Models\\Character\:\:organizations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Character.php
-
-		-
-			message: '#^Method App\\Models\\Character\:\:skills\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Character.php
-
-		-
-			message: '#^Method App\\Models\\Character\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Character.php
-
-		-
-			message: '#^Method App\\Models\\CharacterNpc\:\:character\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/CharacterNpc.php
-
-		-
-			message: '#^Method App\\Models\\CharacterNpc\:\:npc\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/CharacterNpc.php
-
-		-
-			message: '#^Method App\\Models\\CharacterOrganization\:\:character\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/CharacterOrganization.php
-
-		-
-			message: '#^Method App\\Models\\CharacterOrganization\:\:organization\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/CharacterOrganization.php
-
-		-
-			message: '#^Method App\\Models\\InventoryItem\:\:character\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/InventoryItem.php
-
-		-
-			message: '#^Method App\\Models\\Npc\:\:characterConnections\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Npc.php
-
-		-
-			message: '#^Method App\\Models\\Npc\:\:homeworld\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Npc.php
-
-		-
-			message: '#^Method App\\Models\\Npc\:\:lastKnownPlanet\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Npc.php
-
-		-
-			message: '#^Method App\\Models\\Npc\:\:organizations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Npc.php
-
-		-
-			message: '#^Method App\\Models\\Npc\:\:skills\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Npc.php
-
-		-
-			message: '#^Method App\\Models\\NpcOrganization\:\:npc\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/NpcOrganization.php
-
-		-
-			message: '#^Method App\\Models\\NpcOrganization\:\:organization\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/NpcOrganization.php
-
-		-
-			message: '#^Method App\\Models\\NpcSkill\:\:npc\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/NpcSkill.php
-
-		-
-			message: '#^Method App\\Models\\Organization\:\:baseOfOperations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Organization.php
-
-		-
-			message: '#^Method App\\Models\\Organization\:\:characterMemberships\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Organization.php
-
-		-
-			message: '#^Method App\\Models\\Organization\:\:npcMemberships\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Organization.php
-
-		-
-			message: '#^Method App\\Models\\Organization\:\:orgLinkedBy\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Organization.php
-
-		-
-			message: '#^Method App\\Models\\Organization\:\:orgLinks\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Organization.php
-
-		-
-			message: '#^Method App\\Models\\OrganizationOrganization\:\:organization\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/OrganizationOrganization.php
-
-		-
-			message: '#^Method App\\Models\\OrganizationOrganization\:\:relatedOrganization\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/OrganizationOrganization.php
-
-		-
-			message: '#^Method App\\Models\\Party\:\:currentPlanet\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Party.php
-
-		-
-			message: '#^Method App\\Models\\Party\:\:members\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Party.php
-
-		-
-			message: '#^Method App\\Models\\Planet\:\:displayLabel\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^Method App\\Models\\Planet\:\:displayLabel\(\) should return Illuminate\\Database\\Eloquent\\Casts\\Attribute\<string, never\> but returns Illuminate\\Database\\Eloquent\\Casts\\Attribute\<non\-falsy\-string, never\>\.$#'
+			identifier: return.type
 			count: 1
 			path: app/Models/Planet.php
-
-		-
-			message: '#^Method App\\Models\\Skill\:\:character\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Skill.php
-
-		-
-			message: '#^Method App\\Models\\User\:\:characters\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/User.php
-
-		-
-			message: '#^Method App\\Models\\User\:\:currentCharacter\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/User.php
 
 		-
 			message: '#^Property Database\\Factories\\CareerTermFactory\:\:\$careers type has no value type specified in iterable type array\.$#'

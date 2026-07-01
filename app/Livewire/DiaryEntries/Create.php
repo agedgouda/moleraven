@@ -19,6 +19,13 @@ class Create extends Component
 
     public ?string $entry = null;
 
+    public function mount(Character $character): void
+    {
+        $this->character = $character;
+        $last = $character->diaryEntries()->orderByDesc('entry_date')->orderByDesc('created_at')->value('entry_date');
+        $this->entryDate = $last ?? '1105-001';
+    }
+
     /** @var array<int> */
     public array $npcIds = [];
 

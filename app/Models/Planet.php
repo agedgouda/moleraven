@@ -29,6 +29,7 @@ class Planet extends Model
         return Attribute::get(fn () => $this->display_label);
     }
 
+    /** @return Attribute<string, never> */
     protected function displayLabel(): Attribute
     {
         return Attribute::get(function () {

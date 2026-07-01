@@ -2,16 +2,16 @@
 
 use App\Models\User;
 
-test('home redirects guests to login', function () {
+test('home is publicly accessible', function () {
     $response = $this->get(route('home'));
 
-    $response->assertRedirect();
+    $response->assertOk();
 });
 
-test('home redirects authenticated users to party', function () {
+test('home is accessible to authenticated users', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->get(route('home'));
 
-    $response->assertRedirect(route('party'));
+    $response->assertOk();
 });

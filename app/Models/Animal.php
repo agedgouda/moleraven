@@ -34,31 +34,37 @@ class Animal extends Model
         'behavior_subtype' => BehaviorSubtype::class,
     ];
 
+    /** @return BelongsTo<Planet, $this> */
     public function nativePlanet(): BelongsTo
     {
         return $this->belongsTo(Planet::class, 'native_planet_id');
     }
 
+    /** @return BelongsTo<Animal, $this> */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Animal::class, 'parent_animal_id');
     }
 
+    /** @return HasMany<Animal, $this> */
     public function variants(): HasMany
     {
         return $this->hasMany(Animal::class, 'parent_animal_id');
     }
 
+    /** @return HasMany<AnimalSkill, $this> */
     public function skills(): HasMany
     {
         return $this->hasMany(AnimalSkill::class);
     }
 
+    /** @return HasMany<AnimalAttack, $this> */
     public function attacks(): HasMany
     {
         return $this->hasMany(AnimalAttack::class);
     }
 
+    /** @return HasMany<AnimalTrait, $this> */
     public function traits(): HasMany
     {
         return $this->hasMany(AnimalTrait::class);

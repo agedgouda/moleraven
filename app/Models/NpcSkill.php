@@ -20,6 +20,7 @@ class NpcSkill extends Model
     /** @use HasFactory<NpcSkillFactory> */
     use HasFactory;
 
+    /** @return BelongsTo<Npc, $this> */
     public function npc(): BelongsTo
     {
         return $this->belongsTo(Npc::class);
