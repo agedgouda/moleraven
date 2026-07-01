@@ -6,6 +6,7 @@ use App\Models\Animal;
 use App\Models\Npc;
 use App\Models\Organization;
 use App\Models\Planet;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Attributes\Modelable;
@@ -13,6 +14,7 @@ use Livewire\Component;
 
 class EntityPicker extends Component
 {
+    /** @var array<int> */
     #[Modelable]
     public array $value = [];
 
@@ -46,6 +48,7 @@ class EntityPicker extends Component
         $this->value = array_values(array_filter($this->value, fn ($v) => $v !== $id));
     }
 
+    /** @return Collection<int, Model> */
     private function allOptions(): Collection
     {
         return match ($this->type) {

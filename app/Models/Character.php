@@ -106,6 +106,7 @@ class Character extends Model
         return $this->hasMany(CharacterOrganization::class);
     }
 
+    /** @return HasMany<DiaryEntry, $this> */
     public function diaryEntries(): HasMany
     {
         return $this->hasMany(DiaryEntry::class)->orderByDesc('entry_date');

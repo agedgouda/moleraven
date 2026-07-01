@@ -23,6 +23,7 @@ class Planet extends Model
     /** @use HasFactory<PlanetFactory> */
     use HasFactory;
 
+    /** @return Attribute<string, never> */
     protected function name(): Attribute
     {
         return Attribute::get(fn () => $this->display_label);
