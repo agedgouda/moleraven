@@ -7,6 +7,7 @@ use App\Models\DiaryEntry;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 #[Layout('layouts.app', ['title' => 'New Diary Entry'])]
@@ -19,11 +20,17 @@ class Create extends Component
 
     public ?string $entry = null;
 
+    #[Url(as: 'return_to')]
+    public string $returnTo = '';
+
     public function mount(Character $character): void
     {
         $this->character = $character;
         $last = $character->diaryEntries()->orderByDesc('entry_date')->orderByDesc('created_at')->value('entry_date');
         $this->entryDate = $last ?? '1105-001';
+        if ($this->returnTo === '') {
+            $this->returnTo = url()->previous(route('pcs.edit', $character));
+        }
     }
 
     /** @var array<int> */
@@ -60,7 +67,7 @@ class Create extends Component
         $diaryEntry->animals()->sync($this->animalIds);
         $diaryEntry->planets()->sync($this->planetIds);
 
-        $this->redirect(route('pcs.edit', $this->character), navigate: true);
+        $this->redirect($this->returnTo ?: route('pcs.edit', $this->character), navigate: true);
     }
 
     public function render(): View

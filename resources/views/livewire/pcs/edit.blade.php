@@ -147,26 +147,27 @@
             </div>
 
             {{-- Diary Entries --}}
-            @if ($character->diaryEntries->isNotEmpty())
-                <div class="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
-                    <div class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-700">
-                        <flux:heading size="lg">Diary</flux:heading>
-                    </div>
-                    @foreach ($character->diaryEntries as $diaryEntry)
-                        <div class="flex items-center justify-between px-4 py-3 {{ $loop->odd ? 'bg-zinc-100 dark:bg-zinc-800/40' : '' }}">
-                            <div class="min-w-0 flex-1">
-                                @if ($diaryEntry->entry_date)
-                                    <span class="font-mono text-sm text-zinc-500">{{ $diaryEntry->entry_date }}</span>
-                                @endif
-                                @if ($diaryEntry->entry)
-                                    <span class="{{ $diaryEntry->entry_date ? 'ml-2' : '' }} text-sm text-zinc-700 dark:text-zinc-300">{{ Str::limit(strip_tags($diaryEntry->entry), 80) }}</span>
-                                @endif
-                            </div>
-                            <flux:button size="xs" icon="pencil" variant="ghost" href="{{ route('diary.edit', $diaryEntry) }}" wire:navigate />
-                        </div>
-                    @endforeach
+            <div class="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
+                <div class="flex items-center border-b border-zinc-200 px-4 py-3 dark:border-zinc-700">
+                    <flux:heading size="lg">Diary</flux:heading>
+                    <flux:button href="{{ route('diary.create', $character) }}" icon="plus" variant="ghost" size="sm" class="ml-auto" wire:navigate />
                 </div>
-            @endif
+                @forelse ($character->diaryEntries as $diaryEntry)
+                    <div class="flex items-center justify-between px-4 py-3 {{ $loop->odd ? 'bg-zinc-100 dark:bg-zinc-800/40' : '' }}">
+                        <div class="min-w-0 flex-1">
+                            @if ($diaryEntry->entry_date)
+                                <span class="font-mono text-sm text-zinc-500">{{ $diaryEntry->entry_date }}</span>
+                            @endif
+                            @if ($diaryEntry->entry)
+                                <span class="{{ $diaryEntry->entry_date ? 'ml-2' : '' }} text-sm text-zinc-700 dark:text-zinc-300">{{ Str::limit(strip_tags($diaryEntry->entry), 80) }}</span>
+                            @endif
+                        </div>
+                        <flux:button size="xs" icon="pencil" variant="ghost" href="{{ route('diary.edit', $diaryEntry) }}" wire:navigate />
+                    </div>
+                @empty
+                    <div class="px-4 py-3 text-sm text-zinc-400">No diary entries yet.</div>
+                @endforelse
+            </div>
 
             {{-- Notes --}}
             <div class="rounded-xl border border-zinc-200 p-6 dark:border-zinc-700">

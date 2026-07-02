@@ -125,24 +125,29 @@
             </div>
 
             {{-- Diary --}}
-            @if ($character->diaryEntries->isNotEmpty())
-                <div class="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
-                    <div class="border-b border-zinc-200 px-4 py-3 dark:border-zinc-700">
-                        <flux:heading size="lg">Diary</flux:heading>
-                    </div>
-                    @foreach ($character->diaryEntries as $entry)
-                        <a href="{{ route('home', ['entry_id' => $entry->id]) }}"
-                           class="block px-4 py-3 hover:bg-zinc-100 dark:hover:bg-zinc-700/40 {{ $loop->odd ? 'bg-zinc-200 dark:bg-zinc-800/40' : '' }}">
-                            @if ($entry->entry_date)
-                                <span class="font-mono text-sm text-zinc-500">{{ $entry->entry_date }}</span>
-                            @endif
-                            @if ($entry->entry)
-                                <span class="{{ $entry->entry_date ? 'ml-2' : '' }} text-sm text-zinc-700 dark:text-zinc-300">{{ Str::limit(strip_tags($entry->entry), 80) }}</span>
-                            @endif
-                        </a>
-                    @endforeach
+            <div class="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
+                <div class="flex items-center border-b border-zinc-200 px-4 py-3 dark:border-zinc-700">
+                    <flux:heading size="lg">Diary</flux:heading>
+                    @auth
+                        @if (auth()->id() === $character->user_id)
+                            <flux:button href="{{ route('diary.create', $character) }}" icon="plus" variant="ghost" size="sm" class="ml-auto" wire:navigate />
+                        @endif
+                    @endauth
                 </div>
-            @endif
+                @forelse ($character->diaryEntries as $entry)
+                    <a href="{{ route('home', ['entry_id' => $entry->id]) }}"
+                       class="block px-4 py-3 hover:bg-zinc-100 dark:hover:bg-zinc-700/40 {{ $loop->odd ? 'bg-zinc-200 dark:bg-zinc-800/40' : '' }}">
+                        @if ($entry->entry_date)
+                            <span class="font-mono text-sm text-zinc-500">{{ $entry->entry_date }}</span>
+                        @endif
+                        @if ($entry->entry)
+                            <span class="{{ $entry->entry_date ? 'ml-2' : '' }} text-sm text-zinc-700 dark:text-zinc-300">{{ Str::limit(strip_tags($entry->entry), 80) }}</span>
+                        @endif
+                    </a>
+                @empty
+                    <div class="px-4 py-3 text-sm text-zinc-400">No diary entries yet.</div>
+                @endforelse
+            </div>
 
             {{-- Notes --}}
             @if ($character->notes)
