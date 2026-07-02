@@ -11,10 +11,6 @@ use App\Livewire\Planets;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home\Index::class)->name('home');
-Route::get('/pcs/{character}', Pcs\Show::class)->name('pcs.show');
-Route::get('/npcs/{npc}', Npcs\Show::class)->name('npcs.show');
-Route::get('/organizations/{organization}', Organizations\Show::class)->name('organizations.show');
-Route::get('/animals/{animal}', Animals\Show::class)->name('animals.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/party', Party\Index::class)->name('party');
@@ -41,5 +37,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/animals/create', Animals\Create::class)->name('animals.create');
     Route::get('/animals/{animal}/edit', Animals\Edit::class)->name('animals.edit');
 });
+
+Route::get('/pcs/{character}', Pcs\Show::class)->name('pcs.show');
+Route::get('/npcs/{npc}', Npcs\Show::class)->name('npcs.show');
+Route::get('/organizations/{organization}', Organizations\Show::class)->name('organizations.show');
+Route::get('/animals/{animal}', Animals\Show::class)->name('animals.show');
 
 require __DIR__.'/settings.php';
